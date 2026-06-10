@@ -1,0 +1,217 @@
+/* General Page Setup */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f7f6;
+  color: #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+  min-height: 70vh;
+}
+.Background {
+  height: 85%;
+  background:
+    linear-gradient(to bottom, #2c3e50, rgba(0, 191, 255, 0.5)),
+    url("View/background.jpg");
+
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  padding-top: 10%;
+  padding-bottom: 10%;
+  margin: 0;
+}
+
+/* Header & Navigation */
+header {
+  background-color: #2c3e50;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 15px;
+  font-weight: 500;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+.nav-admin {
+  color: #f1c40f !important;
+}
+
+/* Hero Welcome Section */
+.hero-section {
+  text-align: center;
+  padding: 1rem 1rem;
+  background: transparent;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.hero-text {
+  font-size: 1.2rem;
+  color: #ffffff;
+  max-width: 600px;
+  margin: 1rem auto;
+}
+.hero-section h2 {
+  color: #9bc8ff;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  background-color: #e74c3c;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.btn:hover {
+  background-color: #c0392b;
+}
+
+/* Gym Grid/List Section */
+.gyms-section {
+  margin-top: 3rem;
+}
+
+/* Footer Layout */
+footer {
+  background-color: #34495e;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+/* Auth Layout Container (Centers the form nicely inside your layout) */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+.auth-box {
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 450px;
+}
+
+.auth-box h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.auth-subtitle {
+  color: #777;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box; /* Crucial to keep width matching container constraints */
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+  border-color: #2c3e50;
+  outline: none;
+}
+
+.btn-block {
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* Error and Success Alerts */
+.msg {
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.error-msg {
+  background-color: #fce4e4;
+  color: #cc0000;
+  border: 1px solid #f7c5c5;
+}
+
+.success-msg {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #e6f4ea;
+  color: #137333;
+  border: 1px solid #c2e7cb;
+  margin-bottom: 0;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.auth-footer a {
+  color: #e74c3c;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
