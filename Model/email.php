@@ -27,10 +27,10 @@ function send_email($to_address, $to_name, $from_address, $from_name,
     $mail->SMTPSecure = 'tls';
     $mail->Port = 587;
     $mail->SMTPAuth = true;
-    
-    $mail->Username = '';
+    include ('hidden.php')
+    $mail->Username = $email_username;
     // https://support.google.com/accounts/answer/185833?hl=en
-    $mail->Password = '';
+    $mail->Password = $email_password;
     
     $mail->setFrom($from_address, $from_name);
     $mail->addAddress($to_address, $to_name);
