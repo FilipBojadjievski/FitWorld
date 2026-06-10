@@ -17,7 +17,7 @@
             <a href=".?action=login">Login</a>
             <a href=".?action=signup">Sign Up</a>
         <?php else: ?>
-            <a href=".?action=logout">My Reservations</a>
+            <a href="">My Reservations</a>
             <a href=".?action=logout">Logout</a>
         <?php endif; ?>
 

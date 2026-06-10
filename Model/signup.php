@@ -32,6 +32,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result === true) {
             // SUCCESS: Set message and redirect clean out to your Login view!
             $_SESSION['success_message'] = "Thanks for signing up! Please log in below.";
+            
+            $to_address = $email;
+            $to_name = $first_name . " " . $last_name;
+            $from_address = 'fitworld6767@gmail.com';
+            $from_name = 'FitWorld';
+
+            $subject = 'FitReserve - Registration Complete';
+            $body = '<p>Thanks for registering with our site.</p>' .
+                    '<p>Sincerely,</p>' .
+                    '<p>FitReserve</p>';
+
+            $is_body_html = true;
+
+            try {
+                send_email($to_address, $to_name, $from_address, $from_name, 
+                        $subject, $body, $is_body_html);
+                include 'view/success.php';
+            } catch (Exception $ex) {
+                $error = $ex->getMessage();
+                include 'view/signup_page.php';
+            }
+
+            #break;
+
             header("Location: ../index.php"); 
             exit;
         } else {
