@@ -1,10 +1,18 @@
 <?php
-if (!isset($_SESSION['user_id']) || ($_SESSION['is_admin'] ?? 0) !== 1) {
-    $_SESSION['error_message'] = "Unauthorized access. Gym management requires an owner profile.";
-    header("Location: .?action=login");
-    exit;
-    }
 include('./View/header.php'); 
+
+// 🌟 Extract flashed data if it exists, then clear the flash tracking memory
+$old = $_SESSION['old_input'] ?? [];
+unset($_SESSION['old_input']);
+if (!empty($_SESSION['error_message'])): ?>
+    <div class="msg error-msg">
+        <?php 
+            echo htmlspecialchars($_SESSION['error_message']); 
+            unset($_SESSION['error_message']); 
+        ?>
+    </div>
+    
+<?php endif
 ?>
 
 <div class="form-container">
@@ -19,33 +27,40 @@ include('./View/header.php');
         </div>
     <?php endif; ?>
 
-    <form action=".?action=process_register_gym" method="POST" enctype="multipart/form-data" class="modern-form">
+    <form action="./Model/send_gym.php" method="POST" enctype="multipart/form-data" class="modern-form">
         
         <div class="form-fields-box">
             
             <div class="form-group">
                 <label for="name">Gym Name</label>
-                <input type="text" id="name" name="name" class="width-restricted" placeholder="Write your Gym Name" required>
+                <input type="text" id="name" name="name" class="width-restricted" 
+                       placeholder="e.g., The Iron Temple" 
+                       value="<?= htmlspecialchars($old['name'] ?? '') ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="address">Physical Address</label>
-                <input type="text" id="address" name="address" class="width-restricted" placeholder="Write your Address here" required>
+                <input type="text" id="address" name="address" class="width-restricted" 
+                       placeholder="e.g., 123 Muscle Boulevard, Skopje" 
+                       value="<?= htmlspecialchars($old['address'] ?? '') ?>" required>
             </div>
 
             <div class="form-group">
                 <label for="description">Short Description</label>
-                <textarea id="description" name="description" class="width-restricted" rows="4" placeholder="Describe your premium equipment..." required></textarea>
+                <textarea id="description" name="description" class="width-restricted" rows="4" 
+                          placeholder="Describe your premium equipment..." required><?= htmlspecialchars($old['description'] ?? '') ?></textarea>
             </div>
 
             <div class="form-row">
                 <div class="form-group time-group">
                     <label for="opening_hour">Opening Time</label>
-                    <input type="time" id="opening_hour" name="opening_hour" class="time-slot" value="08:00" required>
+                    <input type="time" id="opening_hour" name="opening_hour" class="time-slot" 
+                           value="<?= htmlspecialchars($old['opening_hour'] ?? '08:00') ?>" required>
                 </div>
                 <div class="form-group time-group">
                     <label for="closing_hour">Closing Time</label>
-                    <input type="time" id="closing_hour" name="closing_hour" class="time-slot" value="22:00" required>
+                    <input type="time" id="closing_hour" name="closing_hour" class="time-slot" 
+                           value="<?= htmlspecialchars($old['closing_hour'] ?? '22:00') ?>" required>
                 </div>
             </div>
 

@@ -10,6 +10,15 @@ require_once('./Model/database.php');
 require_once('./Model/gym_db.php'); 
 
 $gyms = get_gyms_by_owner($pdo, $_SESSION['user_id']);
+if (!empty($_SESSION['error_message'])): ?>
+    <div class="msg error-msg">
+        <?php 
+            echo htmlspecialchars($_SESSION['error_message']); 
+            unset($_SESSION['error_message']); 
+        ?>
+    </div>
+    
+<?php endif;
 include('./View/header.php'); 
 ?>
 

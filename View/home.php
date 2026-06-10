@@ -2,7 +2,16 @@
 
 
 include('./View/header.php');
-require_once('./Model/database.php') 
+require_once('./Model/database.php') ;
+if (!empty($_SESSION['error_message'])): ?>
+    <div class="msg error-msg">
+        <?php 
+            echo htmlspecialchars($_SESSION['error_message']); 
+            unset($_SESSION['error_message']); 
+        ?>
+    </div>
+    
+<?php endif
 ?>
 <div class="Background">
 <section class="hero-section">
