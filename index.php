@@ -45,5 +45,11 @@ switch ($action) {
     case 'register_new_gym':
         include('./View/register_gym.php');
         break;
+    case 'view_gym':
+        include('./View/view_gym.php');
+        break;
+    case 'add_event_form':
+        include('./View/add_event_form.php');
+        break;
 }
 ?>

@@ -1,6 +1,10 @@
 <?php
 include('./View/header.php'); 
-
+if (!isset($_SESSION['user_id']) || ($_SESSION['is_admin'] ?? 0) !== 1) {
+    $_SESSION['error_message'] = "Unauthorized access. Gym management requires an owner profile.";
+    header("Location: .?action=show_home");
+    exit;
+}
 // 🌟 Extract flashed data if it exists, then clear the flash tracking memory
 $old = $_SESSION['old_input'] ?? [];
 unset($_SESSION['old_input']);

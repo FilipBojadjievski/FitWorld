@@ -386,3 +386,247 @@ footer {
   border-top: 1px solid #edf2f7;
   padding-top: 20px;
 }
+/* Container Layout Matrix */
+.admin-profile-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+.admin-nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.admin-badge {
+  background-color: #fef3c7;
+  color: #92400e;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  border: 1px solid #fde68a;
+}
+
+/* Base Panel Definitions */
+.admin-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 28px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Top Block Data Structures */
+.top-box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.gym-title-text {
+  margin: 0 0 6px 0;
+  font-size: 2rem;
+  color: #0f172a;
+}
+.gym-location-sub {
+  margin: 0;
+  color: #64748b;
+  font-size: 1rem;
+}
+
+.visibility-pill {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.pill-visible {
+  background: #dcfce7;
+  color: #166534;
+}
+.pill-hidden {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.divider-line {
+  border: 0;
+  height: 1px;
+  background: #e2e8f0;
+  margin: 20px 0;
+}
+
+.info-layout-grid {
+  display: flex;
+  gap: 40px;
+}
+.desc-panel {
+  flex: 2;
+}
+.meta-panel {
+  flex: 1;
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #edf2f7;
+}
+.info-layout-grid h4 {
+  margin: 0 0 12px 0;
+  color: #334155;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.desc-content {
+  line-height: 1.6;
+  color: #475569;
+  margin: 0;
+}
+.meta-panel p {
+  margin: 6px 0;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+/* Mid Block (Events Display) Components */
+.section-title-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.section-title-bar h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.3rem;
+}
+.btn-create-event {
+  text-decoration: none;
+  background: #3b82f6;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.empty-events-state {
+  text-align: center;
+  padding: 30px;
+  background: #f8fafc;
+  border-radius: 8px;
+  color: #94a3b8;
+  border: 2px dashed #e2e8f0;
+}
+
+.events-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.event-row-item {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 16px 20px;
+  border-radius: 8px;
+  gap: 24px;
+}
+.event-meta-time {
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  font-size: 0.9rem;
+}
+.evt-date {
+  font-weight: 700;
+  color: #1e293b;
+}
+.evt-clock {
+  color: #64748b;
+  margin-top: 4px;
+}
+.event-core-details {
+  flex: 1;
+}
+.event-core-details h5 {
+  margin: 0 0 4px 0;
+  font-size: 1.1rem;
+  color: #0f172a;
+}
+.event-core-details p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+.event-limit-badge {
+  background: #f1f5f9;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+/* Bottom Block Danger UI Rules */
+.danger-zone-footer {
+  border: 1px solid #fca5a5;
+  background: #fff5f5;
+}
+.danger-zone-footer h4 {
+  margin: 0 0 6px 0;
+  color: #991b1b;
+  font-size: 1.2rem;
+}
+.danger-subtext {
+  margin: 0 0 20px 0;
+  color: #7f1d1d;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+.danger-actions-row {
+  display: flex;
+  gap: 16px;
+}
+
+.inline-form {
+  display: inline-block;
+}
+.btn-action {
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s;
+}
+.btn-hide {
+  background: #ea580c;
+  color: #ffffff;
+}
+.btn-hide:hover {
+  background: #c2410c;
+}
+.btn-unhide {
+  background: #059669;
+  color: #ffffff;
+}
+.btn-unhide:hover {
+  background: #047857;
+}
+.btn-delete {
+  background: #dc2626;
+  color: #ffffff;
+}
+.btn-delete:hover {
+  background: #b91c1c;
+}

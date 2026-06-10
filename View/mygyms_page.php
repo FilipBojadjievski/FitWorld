@@ -1,7 +1,7 @@
 <?php
 if (!isset($_SESSION['user_id']) || ($_SESSION['is_admin'] ?? 0) !== 1) {
     $_SESSION['error_message'] = "Unauthorized access. Gym management requires an owner profile.";
-    header("Location: .?action=login");
+    header("Location: .?action=show_home");
     exit;
 }
 
@@ -34,9 +34,14 @@ include('./View/header.php');
 
                     <div class="gym-card">
                         
-                        <div class="gym-card-thumb" style="background-image: url('uploads/<?= htmlspecialchars($gym['photo'] ?? 'default-gym.jpg') ?>');"></div>
+                        <div class="gym-card-thumb" style="background-image: url('uploads/<?= htmlspecialchars($gym['photo'] ?? 'default-gym.jpg') ?>');">
+                            
+                        </div>
                         
                         <div class="gym-card-body">
+                            <span class="status-badge <?= $gym['is_hidden'] ? 'badge-hidden' : 'badge-visible' ?>">
+    <?= $gym['is_hidden'] ? '🔒 Hidden' : '🌐 Public' ?>
+</span>
                             <a href=".?action=view_gym&id=<?= $gym['id'] ?>" class="gym-card-link">
                             <h3 class="gym-title"><?= htmlspecialchars($gym['name']) ?></h3>
                             </a>
