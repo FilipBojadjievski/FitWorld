@@ -43,7 +43,7 @@ switch ($action) {
         include("./View/mygyms_page.php");
         break;
     case 'register_new_gym':
-        include('./View/home.php');
+        include('./View/register_gym.php');
         break;
 }
 ?>

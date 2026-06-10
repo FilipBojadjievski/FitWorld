@@ -279,3 +279,111 @@ footer {
   border-radius: 20px;
   font-weight: 600;
 }
+/* Container Box */
+.form-container {
+  max-width: 650px;
+  margin: 40px auto;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.form-header {
+  margin-bottom: 24px;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 16px;
+}
+
+/* Inner Structural Container Box for Input Fields */
+.form-fields-box {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+/* Specific Width Boundaries for Standard Controls */
+.width-restricted {
+  width: 100%;
+  max-width: 420px; /* Explicit width constraint so elements don't span the full page width */
+  box-sizing: border-box;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #1e293b;
+  background-color: #fff;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* Shortened Time Entry Rows */
+.form-row {
+  display: flex;
+  gap: 24px;
+}
+
+.time-group {
+  flex: none; /* Disables flex engine grow properties */
+}
+
+.time-slot {
+  width: 120px; /* Explicit compact desktop sizing footprint for clock selections */
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Photo Area Styling Constraint */
+.file-upload-wrapper {
+  background: #ffffff;
+  border: 2px dashed #cbd5e1;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.file-help {
+  margin: 6px 0 0 0;
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+/* Separated Action Buttons Layout Block */
+.form-actions {
+  display: flex;
+  justify-content: space-between; /* Spreads buttons completely to opposite sides */
+  align-items: center;
+  margin-top: 24px;
+  border-top: 1px solid #edf2f7;
+  padding-top: 20px;
+}
