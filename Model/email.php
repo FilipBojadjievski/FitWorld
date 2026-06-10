@@ -28,9 +28,9 @@ function send_email($to_address, $to_name, $from_address, $from_name,
     $mail->Port = 587;
     $mail->SMTPAuth = true;
     
-    $mail->Username = 'fitworld6767@gmail.com';
+    $mail->Username = '';
     // https://support.google.com/accounts/answer/185833?hl=en
-    $mail->Password = 'dvib llhi pgfl lcbm';
+    $mail->Password = '';
     
     $mail->setFrom($from_address, $from_name);
     $mail->addAddress($to_address, $to_name);
