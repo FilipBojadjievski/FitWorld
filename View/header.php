@@ -24,7 +24,7 @@
         <?php 
         // 3. ADMIN VIEW: Show the admin link cleanly if the boolean is true
         if ($isAdmin) {
-            echo '<a href="#admin" class="nav-admin">My gyms</a>';
+            echo '<a href=".?action=my_gyms" class="nav-admin">My gyms</a>';
         }
         ?>
     </nav>
