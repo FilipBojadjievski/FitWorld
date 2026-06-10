@@ -37,11 +37,13 @@ switch ($action) {
         include('./View/login_page.php');
         break;
     case 'logout':
-
         header("Location: ./Model/logout.php");
         break;
     case 'my_gyms':
         include("./View/mygyms_page.php");
+        break;
+    case 'register_new_gym':
+        include('./View/home.php');
         break;
 }
 ?>
