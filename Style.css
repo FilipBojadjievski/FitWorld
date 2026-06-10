@@ -215,3 +215,67 @@ footer {
 .auth-footer a:hover {
   text-decoration: underline;
 }
+/* Clean up the card box container to host an image top-cap */
+.gym-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden; /* Clips the background image to the card border radius */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Dashboard Card Thumbnail box */
+.gym-card-thumb {
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+  background-color: #cbd5e1;
+}
+
+/* Card inner text body pad spacing */
+.gym-card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.gym-title {
+  margin: 0 0 8px 0;
+  font-size: 1.25rem;
+  color: #0f172a;
+}
+
+.gym-description-snippet {
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0 0 16px 0;
+  flex-grow: 1; /* Keeps footer contents perfectly aligned cross-row */
+}
+
+.gym-meta {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #334155;
+  margin: 0 0 12px 0;
+}
+
+/* Modern low-profile timing tag pill layout */
+.gym-hours-tag {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.8rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}

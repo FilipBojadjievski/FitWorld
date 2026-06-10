@@ -17,14 +17,14 @@
             <a href=".?action=login">Login</a>
             <a href=".?action=signup">Sign Up</a>
         <?php else: ?>
-            <a href=".?action=logout">My Reservations</a>
+            <a href="">My Reservations</a>
             <a href=".?action=logout">Logout</a>
         <?php endif; ?>
 
         <?php 
         // 3. ADMIN VIEW: Show the admin link cleanly if the boolean is true
         if ($isAdmin) {
-            echo '<a href="#admin" class="nav-admin">My gyms</a>';
+            echo '<a href=".?action=my_gyms" class="nav-admin">My gyms</a>';
         }
         ?>
     </nav>

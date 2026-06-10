@@ -40,9 +40,8 @@ switch ($action) {
 
         header("Location: ./Model/logout.php");
         break;
-    case 'empty_cart':
-        unset($_SESSION['cart']);
-        include('cart_view.php');
+    case 'my_gyms':
+        include("./View/mygyms_page.php");
         break;
 }
 ?>
