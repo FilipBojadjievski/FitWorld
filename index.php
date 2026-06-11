@@ -52,7 +52,7 @@ switch ($action) {
         $gyms = get_gyms_by_owner($pdo, $_SESSION['user_id']);
         include("./View/mygyms_page.php");
         break;
-<case 'register_new_gym':
+    case 'register_new_gym':
         include('./View/register_gym.php');
         break;
 

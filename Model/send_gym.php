@@ -33,6 +33,25 @@ if (empty($name) || empty($address) || empty($description) || empty($opening_hou
 
 $db_photo_filename = 'default-gym.jpg';
 
+if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+    $file = $_FILES['photo'];
+    $allowed_types = ['image/jpeg', 'image/png', 'image/webp'];
+    
+    if (in_array($file['type'], $allowed_types)) {
+        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+        
+        // Generate a clean, unique name just like we did for the quick update
+        $db_photo_filename = 'gym_reg_' . time() . '_' . uniqid() . '.' . $ext;
+        
+        // Target your root uploads folder (stepping up out of the Model folder)
+        $upload_dir = dirname(__DIR__) . '/uploads/';
+        
+        // If moving the file fails, fallback to default image
+        if (!move_uploaded_file($file['tmp_name'], $upload_dir . $db_photo_filename)) {
+            $db_photo_filename = 'default-gym.jpg';
+        }
+    }
+}
 $success = add_gym($pdo, $owner_id, $name, $address, $description, $db_photo_filename, $opening_hour, $closing_hour);
 
 if ($success) {
