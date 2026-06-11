@@ -1,1 +1,4 @@
 /Model/hidden.php
+uploads/*
+!.gitkeep
+

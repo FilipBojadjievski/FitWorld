@@ -1,37 +1,35 @@
 <?php
 // Model/GymModel.php
 
+/**
+ * Fetches all gyms managed by a specific gym owner/admin
+ */
 function get_gyms_by_owner($pdo, $owner_id) {
-    $stmt = $pdo->prepare('SELECT id, name, address, description, opening_hour, closing_hour, is_hidden FROM gyms WHERE owner_id = ?');
+$stmt = $pdo->prepare('SELECT id, name, address, description, opening_hour, closing_hour, is_hidden, photo FROM gyms WHERE owner_id = ?');
     $stmt->execute([$owner_id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
 function add_gym($pdo, $owner_id, $name, $address, $description, $photo, $opening_hour, $closing_hour) {
-    // 1. Enforce default placeholder file if no cover image was uploaded
     if (empty($photo)) {
         $photo = 'default-gym.jpg';
     }
 
-    // 2. Prepare the clean SQL string layout
-    $sql = 'INSERT INTO gyms (owner_id, name, address, description, opening_hour, closing_hour) 
-            VALUES (:owner_id, :name, :address, :description, :opening_hour, :closing_hour)';
+    $sql = 'INSERT INTO gyms (owner_id, name, address, description, photo, opening_hour, closing_hour) 
+            VALUES (:owner_id, :name, :address, :description, :photo, :opening_hour, :closing_hour)';
     
     $stmt = $pdo->prepare($sql);
     
-    // 3. Bind the data payload variables safely into the query array execution track
     return $stmt->execute([
         ':owner_id'     => $owner_id,
         ':name'         => $name,
         ':address'      => $address,
         ':description'  => $description,
+        ':photo'        => $photo,
         ':opening_hour' => $opening_hour,
         ':closing_hour' => $closing_hour
     ]);
 }
-/**
- * Fetches future or ongoing scheduled events (Default Mode).
- * Ordered chronological: closest upcoming event shows first.
- */
 
 function get_gym_by_id($pdo, $id) {
     $stmt = $pdo->prepare('SELECT id, owner_id, name, address, description, photo, opening_hour, closing_hour, is_hidden FROM gyms WHERE id = ?');
@@ -45,9 +43,7 @@ function get_events_by_gym($pdo, $gym_id) {
     $stmt->execute([$gym_id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-/**
- * Fetches upcoming events along with the current signup count.
- */
+
 function get_upcoming_events_by_gym($pdo, $gym_id) {
     $stmt = $pdo->prepare('
         SELECT e.*, 
@@ -60,9 +56,6 @@ function get_upcoming_events_by_gym($pdo, $gym_id) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-/**
- * Fetches past event history along with the final signup count.
- */
 function get_past_events_by_gym($pdo, $gym_id) {
     $stmt = $pdo->prepare('
         SELECT e.*, 
@@ -75,9 +68,6 @@ function get_past_events_by_gym($pdo, $gym_id) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-/**
- * Fetches all users registered for a specific event.
- */
 function get_event_participants($pdo, $event_id) {
     $stmt = $pdo->prepare('
         SELECT u.id, u.username as name, u.email, es.signed_up_at 
@@ -88,4 +78,26 @@ function get_event_participants($pdo, $event_id) {
     ');
     $stmt->execute([$event_id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}?>
+}
+
+/**
+ * Updates the image filename for a specific gym
+ */
+function update_gym_photo($pdo, $gym_id, $filename) {
+    $sql = "UPDATE gyms SET photo = :photo WHERE id = :id";
+    $statement = $pdo->prepare($sql);
+    $statement->bindValue(':photo', $filename);
+    $statement->bindValue(':id', $gym_id);
+    $statement->execute();
+    $statement->closeCursor();
+}
+
+/**
+ * Fetches the current photo string for unlinking files
+ */
+function get_gym_photo_by_id($pdo, $gym_id) {
+    $stmt = $pdo->prepare('SELECT photo FROM gyms WHERE id = ?');
+    $stmt->execute([$gym_id]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result ? $result['photo'] : null;
+}
