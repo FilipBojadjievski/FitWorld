@@ -45,9 +45,8 @@ switch ($action) {
         break;
 
     case 'my_gyms':
-        // FIXED: Load database connections and fetch gyms before rendering the view
         require_once('./Model/database.php');
-        require_once('./Model/gym_db.php'); // Or use gym_db.php depending on your exact filename
+        require_once('./Model/gym_db.php'); 
         
         $gyms = get_gyms_by_owner($pdo, $_SESSION['user_id']);
         include("./View/mygyms_page.php");
@@ -63,6 +62,13 @@ switch ($action) {
     case 'add_event_form':
         include('./View/add_event_form.php');
         break;
+    case 'show_gyms':
+    include('./Model/get_available_gyms.php');
+    break;
+
+    case 'reserve_spot':
+    include('./Model/process_reservation.php');
+    break;
 
     case 'upload_gym_photo':
         if (!isset($_SESSION['user_id']) || ($_SESSION['is_admin'] ?? 0) !== 1) {

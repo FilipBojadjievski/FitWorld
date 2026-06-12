@@ -1,9 +1,4 @@
 <?php
-// Model/GymModel.php
-
-/**
- * Fetches all gyms managed by a specific gym owner/admin
- */
 function get_gyms_by_owner($pdo, $owner_id) {
 $stmt = $pdo->prepare('SELECT id, name, address, description, opening_hour, closing_hour, is_hidden, photo FROM gyms WHERE owner_id = ?');
     $stmt->execute([$owner_id]);
@@ -80,9 +75,6 @@ function get_event_participants($pdo, $event_id) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-/**
- * Updates the image filename for a specific gym
- */
 function update_gym_photo($pdo, $gym_id, $filename) {
     $sql = "UPDATE gyms SET photo = :photo WHERE id = :id";
     $statement = $pdo->prepare($sql);
@@ -92,12 +84,47 @@ function update_gym_photo($pdo, $gym_id, $filename) {
     $statement->closeCursor();
 }
 
-/**
- * Fetches the current photo string for unlinking files
- */
+
 function get_gym_photo_by_id($pdo, $gym_id) {
     $stmt = $pdo->prepare('SELECT photo FROM gyms WHERE id = ?');
     $stmt->execute([$gym_id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     return $result ? $result['photo'] : null;
+}
+function reserve_event_spot($pdo, $event_id, $user_id) {
+    $check_stmt = $pdo->prepare('SELECT COUNT(*) FROM event_signups WHERE event_id = ? AND user_id = ?');
+    $check_stmt->execute([$event_id, $user_id]);
+    if ($check_stmt->fetchColumn() > 0) {
+        return ['status' => 'error', 'message' => 'You have already reserved a spot in this event!'];
+    }
+
+    $limit_stmt = $pdo->prepare('
+        SELECT participant_limit, 
+               (SELECT COUNT(*) FROM event_signups WHERE event_id = e.id) AS current_signups 
+        FROM events e WHERE id = ?
+    ');
+    $limit_stmt->execute([$event_id]);
+    $event = $limit_stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$event) {
+        return ['status' => 'error', 'message' => 'Event not found.'];
+    }
+    if ($event['current_signups'] >= $event['participant_limit']) {
+        return ['status' => 'error', 'message' => 'Sorry, this event is completely full!'];
+    }
+
+    $ins_stmt = $pdo->prepare('INSERT INTO event_signups (event_id, user_id) VALUES (?, ?)');
+    $success = $ins_stmt->execute([$event_id, $user_id]);
+    
+    return $success 
+        ? ['status' => 'success', 'message' => 'Spot successfully reserved! See you there.']
+        : ['status' => 'error', 'message' => 'Reservation failed due to a database exception.'];
+}
+
+
+function get_all_public_gyms($pdo) {
+    $stmt = $pdo->prepare('SELECT id, name, address, description, photo, opening_hour, closing_hour 
+                           FROM gyms WHERE is_hidden = 0 ORDER BY name ASC');
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }

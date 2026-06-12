@@ -11,7 +11,7 @@
     <h1>FitReserve 🏋️</h1>
     <nav>
         <a href=".?action=show_home">Home</a>
-        <a href="#gyms">Available Gyms</a>
+        <a href=".?action=show_gyms">Available Gyms</a>
         
         <?php if (!isset($_SESSION['user_id'])): ?>
             <a href=".?action=login">Login</a>
@@ -22,7 +22,6 @@
         <?php endif; ?>
 
         <?php 
-        // 3. ADMIN VIEW: Show the admin link cleanly if the boolean is true
         if ($isAdmin) {
             echo '<a href=".?action=my_gyms" class="nav-admin">My gyms</a>';
         }
