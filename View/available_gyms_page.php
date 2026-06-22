@@ -1,9 +1,14 @@
 <?php include('./View/header.php'); ?>
 
 <div class="catalog-container" style="max-width: 1200px; margin: 30px auto; padding: 0 20px;">
-    <div class="catalog-header" style="margin-bottom: 40px; text-align: center;">
+    <div class="catalog-header" style="margin-bottom: 30px; text-align: center;">
         <h2>Explore Available Gym Facilities</h2>
         <p style="color: #666;">Browse locations, check out ongoing classes, and secure your booking spot.</p>
+    </div>
+
+    <div class="search-bar-container" style="max-width: 500px; margin: 0 auto 40px auto; position: relative;">
+        <input type="text" id="gymSearchInput" placeholder="🔍 Search gyms by name or address..." 
+               style="width: 100%; padding: 12px 20px; font-size: 16px; border: 1px solid #ccc; border-radius: 25px; outline: none; transition: border-color 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
     </div>
 
     <?php if (!empty($_SESSION['success_message'])): ?>
@@ -17,15 +22,15 @@
         </div>
     <?php endif; ?>
 
-    <div class="gyms-catalog-list">
+    <div class="gyms-catalog-list" id="gymsCatalogList">
         <?php if (!empty($gyms_catalog)): ?>
             <?php foreach ($gyms_catalog as $gym): ?>
-                <div class="gym-facility-section" style="background: #fff; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 30px; padding: 20px; display: flex; gap: 20px; flex-wrap: wrap;">
+                <div class="gym-facility-section gym-card-wrapper" style="background: #fff; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 30px; padding: 20px; display: flex; gap: 20px; flex-wrap: wrap; transition: all 0.3s ease;">
                     
                     <div class="gym-details-card" style="flex: 1; min-width: 300px;">
                         <img src="uploads/<?= htmlspecialchars($gym['photo'] ?? 'default-gym.jpg') ?>" alt="Gym Photo" style="width: 100%; height: 200px; object-fit: cover; border-radius: 6px; margin-bottom: 15px;">
-                        <h3 style="margin: 0 0 10px 0; font-size: 24px; color: #333;"><?= htmlspecialchars($gym['name']) ?></h3>
-                        <p style="color: #777; font-size: 14px; margin-bottom: 10px;">📍 <?= htmlspecialchars($gym['address']) ?></p>
+                        <h3 class="gym-name" style="margin: 0 0 10px 0; font-size: 24px; color: #333;"><?= htmlspecialchars($gym['name']) ?></h3>
+                        <p style="color: #777; font-size: 14px; margin-bottom: 10px;">📍 <span class="gym-address"><?= htmlspecialchars($gym['address']) ?></span></p>
                         <p style="font-size: 14px; line-height: 1.5; color: #555;"><?= htmlspecialchars($gym['description']) ?></p>
                         <div style="font-size: 12px; font-weight: bold; color: #2c3e50; background: #ecf0f1; padding: 5px 10px; display: inline-block; border-radius: 4px; margin-top: 10px;">
                             ⏰ Operating Hours: <?= date('H:i', strtotime($gym['opening_hour'])) ?> - <?= date('H:i', strtotime($gym['closing_hour'])) ?>
@@ -38,7 +43,6 @@
                         <?php if (!empty($gym['events'])): ?>
                             <div class="events-stack" style="display: flex; flex-direction: column; gap: 15px;">
                                 <?php foreach ($gym['events'] as $event): 
-                
                                     $spots_left = $event['participant_limit'] - $event['signup_count'];
                                 ?>
                                     <div class="event-row-item" style="border: 1px solid #f0f0f0; background: #fafafa; padding: 15px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; gap: 15px;">
@@ -79,6 +83,11 @@
                     
                 </div>
             <?php endforeach; ?>
+            
+            <div id="noResultsMessage" style="display: none; text-align: center; padding: 40px; color: #7f8c8d;">
+                <p>No matching gym facilities found matching your search term.</p>
+            </div>
+
         <?php else: ?>
             <div style="text-align: center; padding: 40px; color: #7f8c8d;">
                 <p>There are currently no active public gyms registered on the platform.</p>
@@ -86,24 +95,83 @@
         <?php endif; ?>
     </div>
 </div>
+
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+    // --- 1. Autovanish Alert Logic (Existing) ---
     const alerts = document.querySelectorAll('.msg.success-msg, .msg.error-msg');
-    
     alerts.forEach(function(alert) {
         alert.style.transition = "opacity 1s ease, filter 1s ease, transform 1s ease";
-        
         setTimeout(function() {
             alert.style.opacity = "0";
             alert.style.filter = "blur(10px)"; 
             alert.style.transform = "translateY(-10px)"; 
-            
-            setTimeout(function() {
-                alert.remove();
-            }, 1000); 
-            
+            setTimeout(function() { alert.remove(); }, 1000); 
         }, 5000);
     });
+
+   const searchInput = document.getElementById('gymSearchInput');
+    const catalogList = document.getElementById('gymsCatalogList');
+    const gymCards = Array.from(document.querySelectorAll('.gym-card-wrapper'));
+    const noResultsMessage = document.getElementById('noResultsMessage');
+
+    if (searchInput && catalogList) {
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            
+            if (searchTerm === "") {
+                // If the search bar is empty, restore the original database order
+                gymCards.forEach(card => card.style.display = "flex");
+                noResultsMessage.style.display = "none";
+                return;
+            }
+
+            let visibleCount = 0;
+
+            // 1. Filter out cards that don't match the name at all
+            const matchingCards = gymCards.filter(function(card) {
+                const gymName = card.querySelector('.gym-name').textContent.toLowerCase();
+                
+                if (gymName.includes(searchTerm)) {
+                    card.style.display = "flex";
+                    visibleCount++;
+                    return true;
+                } else {
+                    card.style.display = "none";
+                    return false;
+                }
+            });
+
+            // 2. Sort matching cards based on the index position of the search term
+            matchingCards.sort(function(a, b) {
+                const nameA = a.querySelector('.gym-name').textContent.toLowerCase();
+                const nameB = b.querySelector('.gym-name').textContent.toLowerCase();
+                
+                const indexA = nameA.indexOf(searchTerm);
+                const indexB = nameB.indexOf(searchTerm);
+                
+                // Lower index means it appears closer to the start of the string
+                return indexA - indexB;
+            });
+
+            // 3. Re-append the sorted elements back into the DOM wrapper container
+            matchingCards.forEach(function(card) {
+                catalogList.appendChild(card);
+            });
+
+            // Toggle no results notice based on match count
+            if (visibleCount === 0 && gymCards.length > 0) {
+                noResultsMessage.style.display = "block";
+            } else {
+                noResultsMessage.style.display = "none";
+            }
+        });
+        
+        // Add active glowing border indicator state on focus
+        searchInput.addEventListener('focus', function() { this.style.borderColor = "#3498db"; });
+        searchInput.addEventListener('blur', function() { this.style.borderColor = "#ccc"; });
+    }
 });
 </script>
+
 <?php include('./View/footer.php'); ?>

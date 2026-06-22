@@ -8,6 +8,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once('../Model/database.php');
 require_once('../Model/signup_func.php');
+// 🌟 Link your fixed email helper script right here
+require_once('../Model/email.php'); 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
@@ -26,45 +28,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: ../index.php?action=signup");
         exit;
     } else {
-        // Ask the model to do the heavy lifting
         $result = register_user($pdo, $username, $email, $password, $is_admin);
 
         if ($result === true) {
-            // SUCCESS: Set message and redirect clean out to your Login view!
             $_SESSION['success_message'] = "Thanks for signing up! Please log in below.";
             
-            $to_address = $email;
-            $to_name = $first_name . " " . $last_name;
-            $from_address = 'fitworld6767@gmail.com';
-            $from_name = 'FitWorld';
-
-            $subject = 'FitReserve - Registration Complete';
-            $body = '<p>Thanks for registering with our site.</p>' .
-                    '<p>Sincerely,</p>' .
-                    '<p>FitReserve</p>';
-
-            $is_body_html = true;
-
+            // 🌟 Run your teammate's custom send_email function!
             try {
-                send_email($to_address, $to_name, $from_address, $from_name, 
-                        $subject, $body, $is_body_html);
-                include 'view/success.php';
+                send_email(
+                    $email, 
+                    $username, 
+                    'fitworld6767@gmail.com', 
+                    'FitWorld', 
+                    'FitReserve - Registration Complete', 
+                    '<p>Thanks for registering with our site.</p>', 
+                    true
+                );
             } catch (Exception $ex) {
-                $error = $ex->getMessage();
-                include 'view/signup_page.php';
+                // Logs the error silently if Google's network blocks local app connections
+                error_log("Signup notification failed: " . $ex->getMessage());
             }
 
-            #break;
-
-            header("Location: ../index.php"); 
+            header("Location: ../index.php?action=login"); 
             exit;
         } else {
-            // FAILURE: Send back the database conflict string
             $_SESSION['error_message'] = $result;
             $_SESSION['form_input'] = [
                 'username' => $username,
                 'email'    => $email,
-                'is_admin' => isset($_POST['is_admin']) ? 1 : 0
+                'is_admin' => $is_admin
             ];
             header('Location: ../index.php?action=signup');
             exit;
