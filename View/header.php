@@ -17,12 +17,12 @@
             <a href=".?action=login">Login</a>
             <a href=".?action=signup">Sign Up</a>
         <?php else: ?>
-            <a href="">My Reservations</a>
+            <a href=".?action=my_reservations">My Reservations</a>
             <a href=".?action=logout">Logout</a>
         <?php endif; ?>
 
         <?php 
-        if ($isAdmin) {
+        if ($_SESSION['is_admin'] ?? 0) {
             echo '<a href=".?action=my_gyms" class="nav-admin">My gyms</a>';
         }
         ?>

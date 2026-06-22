@@ -63,12 +63,20 @@ switch ($action) {
         include('./View/add_event_form.php');
         break;
     case 'show_gyms':
-    include('./Model/get_available_gyms.php');
-    break;
+        include('./Model/get_available_gyms.php');
+        break;
 
     case 'reserve_spot':
-    include('./Model/process_reservation.php');
-    break;
+        include('./Model/process_reservation.php');
+        break;
+
+    case 'my_reservations':
+        require_once('./Model/database.php'); // Loads the $pdo variable
+        require_once('./Controller/ReservationController.php');
+        
+        $controller = new ReservationController();
+        $controller->showMyReservations();
+        break;
 
     case 'upload_gym_photo':
         if (!isset($_SESSION['user_id']) || ($_SESSION['is_admin'] ?? 0) !== 1) {
