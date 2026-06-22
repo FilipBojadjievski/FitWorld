@@ -33,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result === true) {
             $_SESSION['success_message'] = "Thanks for signing up! Please log in below.";
             
-            // 🌟 Run your teammate's custom send_email function safely!
             try {
                 send_email(
                     $email, 
@@ -41,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'fitworld6767@gmail.com', 
                     'FitWorld', 
                     'FitReserve - Registration Complete', 
-                    '<p>Thanks for registering with our site.</p>', 
+                    '<p>Thanks for registering with our site.</p> <p> You can now log in and start using our services.</p> <p>Sincerely,</p><p>The FitReserve Team</p>', 
                     true
                 );
             } catch (Exception $ex) {
@@ -55,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['error_message'] = $result;
             $_SESSION['form_input'] = [
                 'username' => $username,
-                'email'    =V $email,
+                'email'    => $email,
                 'is_admin' => $is_admin
             ];
             header('Location: ../index.php?action=signup');
