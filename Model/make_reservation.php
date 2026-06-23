@@ -32,7 +32,7 @@ class Reservation {
         global $pdo;
         
         // Security check: ensure the user_id matches the signup record row
-        $sql = "DELETE FROM events_signups WHERE id = ? AND user_id = ?";
+        $sql = "DELETE FROM event_signups WHERE id = ? AND user_id = ?";
         $stmt = $pdo->prepare($sql);
         return $stmt->execute([$signupId, $userId]);
     }

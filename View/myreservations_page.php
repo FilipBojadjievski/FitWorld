@@ -42,7 +42,7 @@ include('./View/header.php'); ?>
                                 <td style="padding: 15px 12px; color: #666;"><?= date('M d, Y', strtotime($res['event_date'])) ?></td>
                                 <td style="padding: 15px 12px;"><span style="color: #e67e22; font-weight: bold;">⏰ <?= date('H:i', strtotime($res['start_time'])) ?> - <?= date('H:i', strtotime($res['end_time'])) ?></span></td>
                                 <td style="padding: 15px 12px; text-align: center;">
-                                    <form action="index.php?action=my_reservations" method="POST" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
+                                    <form action="." method="POST" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
                                         <input type="hidden" name="action" value="cancel_reservation">
                                         <input type="hidden" name="signup_id" value="<?= $res['signup_id'] ?>">
                                         <button type="submit" style="background: #e74c3c; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; transition: background 0.2s;">
@@ -58,7 +58,7 @@ include('./View/header.php'); ?>
         <?php else: ?>
             <div style="text-align: center; padding: 40px; color: #7f8c8d;">
                 <p>You haven't reserved any activity sessions yet.</p>
-                <a href="index.php?action=available_gyms" style="display: inline-block; margin-top: 15px; background: #3498db; color: #fff; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px;">Browse Gym Classes</a>
+                <a href=".?action=available_gyms" style="display: inline-block; margin-top: 15px; background: #3498db; color: #fff; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-weight: bold; font-size: 13px;">Browse Gym Classes</a>
             </div>
         <?php endif; ?>
     </div>
