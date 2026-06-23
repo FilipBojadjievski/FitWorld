@@ -1,4 +1,5 @@
 <?php
+//ob_start(); // Turns on output buffering to prevent header errors
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -71,11 +72,11 @@ switch ($action) {
         break;
 
     case 'my_reservations':
-        require_once('./Model/database.php'); // Loads the $pdo variable
-        require_once('./Controller/ReservationController.php');
-        
-        $controller = new ReservationController();
-        $controller->showMyReservations();
+        include('./Model/get_reservations.php');   // Fetches user reservations
+        break;
+    
+    case 'cancel_reservation':
+        include('./Model/process_cancellation.php');
         break;
 
     case 'upload_gym_photo':
