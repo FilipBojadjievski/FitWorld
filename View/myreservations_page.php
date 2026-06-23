@@ -28,7 +28,7 @@ include('./View/header.php'); ?>
                             <th style="padding: 12px; font-weight: bold;">Gym Location</th>
                             <th style="padding: 12px; font-weight: bold;">Date</th>
                             <th style="padding: 12px; font-weight: bold;">Time Window</th>
-                            <th style="padding: 12px; font-weight: bold; text-align: center;">Action</th>
+                            <th style="padding: 12px; font-weight: bold; text-align: center;"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,7 +46,7 @@ include('./View/header.php'); ?>
                                         <input type="hidden" name="action" value="cancel_reservation">
                                         <input type="hidden" name="signup_id" value="<?= $res['signup_id'] ?>">
                                         <button type="submit" style="background: #e74c3c; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; transition: background 0.2s;">
-                                            Cancel Spot
+                                            Cancel
                                         </button>
                                     </form>
                                 </td>
