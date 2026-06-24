@@ -33,6 +33,8 @@ if (!isset($_SESSION['user_id']) || ($_SESSION['is_admin'] ?? 0) !== 1) {
             $event['participants'] = get_event_participants($pdo, $event['id']);
         }
         unset($event);
+
+
 include('./View/header.php'); ?>
 
 <div class="admin-profile-container">
@@ -48,8 +50,15 @@ include('./View/header.php'); ?>
                 <h1 class="gym-title-text"><?= htmlspecialchars($gym['name']) ?></h1>
                 <p class="gym-location-sub">📍 <?= htmlspecialchars($gym['address']) ?></p>
             </div>
-            <div class="visibility-pill <?= $gym['is_hidden'] ? 'pill-hidden' : 'pill-visible' ?>">
-                <?= $gym['is_hidden'] ? '🔒 Hidden from Public' : '🌐 Visible to Public' ?>
+
+            <div class="header-actions" style="display: flex; align-items: center; gap: 12px;">
+               <a href=".?action=edit_gym_form&gym_id=<?= $gym['id'] ?>" class="edit-gym-btn">
+                    ✏️ Edit Info
+                </a>
+
+                <div class="visibility-pill <?= $gym['is_hidden'] ? 'pill-hidden' : 'pill-visible' ?>">
+                    <?= $gym['is_hidden'] ? '🔒 Hidden from Public' : '🌐 Visible to Public' ?>
+                </div>
             </div>
         </div>
         
@@ -61,9 +70,9 @@ include('./View/header.php'); ?>
                 <p class="desc-content"><?= nl2br(htmlspecialchars($gym['description'])) ?></p>
             </div>
             <div class="meta-panel">
-                <h4>Operational Window</h4>
-                <p><strong>Open Flag:</strong> <?= date('H:i', strtotime($gym['opening_hour'])) ?></p>
-                <p><strong>Close Flag:</strong> <?= date('H:i', strtotime($gym['closing_hour'])) ?></p>
+                <h4>Working Hours</h4>
+                <p><strong>Opening Hour:</strong> <?= date('H:i', strtotime($gym['opening_hour'])) ?></p>
+                <p><strong>Closing Hour:</strong> <?= date('H:i', strtotime($gym['closing_hour'])) ?></p>
             </div>
         </div>
     </section>

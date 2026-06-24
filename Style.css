@@ -630,3 +630,26 @@ footer {
 .btn-delete:hover {
   background: #b91c1c;
 }
+
+.edit-gym-btn {
+    background-color: #e67e22 !important; /* Nice corporate orange */
+    color: #ffffff !important;
+    padding: 8px 14px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.edit-gym-btn:hover {
+    background-color: #d35400 !important; /* Darker burnt orange */
+    color: #ffffff !important;
+}
+
+.edit-gym-btn:active {
+    transform: scale(0.98);
+}

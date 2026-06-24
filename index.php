@@ -79,6 +79,14 @@ switch ($action) {
         include('./Model/process_cancellation.php');
         break;
 
+    case 'edit_gym_form':
+        include('./View/edit_gym_form.php');
+        break;
+
+    case 'update_gym':
+        include('./Model/process_gym_update.php'); // The script that processes the form
+        break;
+
     case 'upload_gym_photo':
         if (!isset($_SESSION['user_id']) || ($_SESSION['is_admin'] ?? 0) !== 1) {
             die("Unauthorized access.");
