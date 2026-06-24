@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             $_SESSION['user_id']    = $user['id'];
             $_SESSION['username']   = $user['username'];
+            $_SESSION['user_email'] = $user['email'];
             $_SESSION['is_admin']   = (int)$user['is_admin'];
 
             $_SESSION['success_message'] = "Successful Login";
