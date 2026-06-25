@@ -87,6 +87,18 @@ switch ($action) {
         include('./Model/process_gym_update.php'); // The script that processes the form
         break;
 
+    case 'edit_event_form':
+        include('./View/edit_event_form.php');
+        break;
+
+    case 'delete_event':
+        include('./Model/process_event_deletion.php'); // Script executing: DELETE FROM events WHERE id = ?
+        break;
+
+    case 'update_event': 
+        include('./Model/process_event_update.php'); 
+        break;
+
     case 'upload_gym_photo':
         if (!isset($_SESSION['user_id']) || ($_SESSION['is_admin'] ?? 0) !== 1) {
             die("Unauthorized access.");
