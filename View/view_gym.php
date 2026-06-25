@@ -8,34 +8,44 @@ if (!isset($_SESSION['user_id']) || ($_SESSION['is_admin'] ?? 0) !== 1) {
 }
 
 
-        $gym_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-        if (!$gym_id) {
-            header("Location: .?action=my_gyms");
-            exit;
-        }
+    $gym_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    if (!$gym_id) {
+        header("Location: .?action=my_gyms");
+        exit;
+    }
+    $gym = get_gym_by_id($pdo, $gym_id);
+    if (!$gym) {
+        header("Location: .?action=my_gyms");
+        exit;
+    }
 
-        $gym = get_gym_by_id($pdo, $gym_id);
-        if (!$gym) {
-            header("Location: .?action=my_gyms");
-            exit;
-        }
-    
-        $events = get_events_by_gym($pdo, $gym_id); 
-        $show = filter_input(INPUT_GET, 'show', FILTER_DEFAULT) ?? 'upcoming';
-
-        if ($show === 'past') {
-            $events = get_past_events_by_gym($pdo, $gym_id);
-        } else {
-            $show = 'upcoming'; // Fallback baseline defaults to upcoming
-            $events = get_upcoming_events_by_gym($pdo, $gym_id);
-        }
-        foreach ($events as &$event) {
-            $event['participants'] = get_event_participants($pdo, $event['id']);
-        }
-        unset($event);
+    $events = get_events_by_gym($pdo, $gym_id); 
+    $show = filter_input(INPUT_GET, 'show', FILTER_DEFAULT) ?? 'upcoming';
+    if ($show === 'past') {
+        $events = get_past_events_by_gym($pdo, $gym_id);
+    } else {
+        $show = 'upcoming'; // Fallback baseline defaults to upcoming
+        $events = get_upcoming_events_by_gym($pdo, $gym_id);
+    }
+    foreach ($events as &$event) {
+        $event['participants'] = get_event_participants($pdo, $event['id']);
+    }
+    unset($event);
 
 
 include('./View/header.php'); ?>
+
+<?php if (!empty($_SESSION['success_message'])): ?>
+    <div class="msg success-msg" style="position: static; transform: none; margin: 15px auto; max-width: 1000px; text-align: center;">
+        ✅ <?= htmlspecialchars($_SESSION['success_message']); unset($_SESSION['success_message']); ?>
+    </div>
+<?php endif; ?>
+
+<?php if (!empty($_SESSION['error_message'])): ?>
+    <div class="msg error-msg" style="margin: 15px auto; max-width: 1000px; text-align: center;">
+        ⚠️ <?= htmlspecialchars($_SESSION['error_message']); unset($_SESSION['error_message']); ?>
+    </div>
+<?php endif; ?>
 
 <div class="admin-profile-container">
     
@@ -115,6 +125,20 @@ include('./View/header.php'); ?>
                 <div class="event-limit-badge <?= ($event['signup_count'] >= $event['participant_limit']) ? 'capacity-full' : 'capacity-open' ?>">
                     👥 Signups: <strong><?= (int)$event['signup_count'] ?></strong> / <?= (int)$event['participant_limit'] ?>
                 </div>
+
+                <div class="admin-event-buttons" style="display: flex; gap: 8px;">
+                    <a href=".?action=edit_event_form&event_id=<?= $event['id'] ?>&gym_id=<?= $gym['id'] ?>" class="edit-gym-btn" style="padding: 6px 12px; font-size: 12px;">
+                        ✏️ Edit Event
+                    </a>
+                    <form action=".?action=delete_event" method="POST" style="margin: 0;" onsubmit="return confirm('Are you completely sure you want to permanently delete the event \'<?= htmlspecialchars($event['title']) ?>\'? This clears all existing user signups.');">
+                        <input type="hidden" name="event_id" value="<?= $event['id'] ?>">
+                        <input type="hidden" name="gym_id" value="<?= $gym['id'] ?>">
+                        <button type="submit" style="background: #e74c3c; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#c0392b'" onmouseout="this.style.backgroundColor='#e74c3c'">
+                            🗑️ Delete Event
+                        </button>
+                    </form>
+                </div>
+
             </div>
 
             <div class="event-roster-drawer">

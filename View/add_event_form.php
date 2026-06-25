@@ -78,7 +78,7 @@ $gym_id = filter_input(INPUT_GET, 'gym_id', FILTER_VALIDATE_INT) ?: ($old['gym_i
         </div>
 
         <div class="form-actions">
-            <a href=".?action=view_gym_admin&id=<?= (int)$gym_id ?>" class="btn btn-secondary">← Cancel and Return</a>
+            <a href=".?action=view_gym&id=<?= (int)$gym_id ?>" class="btn btn-secondary">← Cancel and Return</a>
             <button type="submit" class="btn btn-success">Publish Event Live →</button>
         </div>
 

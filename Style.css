@@ -607,7 +607,7 @@ footer {
   font-size: 0.95rem;
   cursor: pointer;
   border: none;
-  transition: background 0.15s;
+  transition: background-color 0.15s;
 }
 .btn-hide {
   background: #ea580c;
