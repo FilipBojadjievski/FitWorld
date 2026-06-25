@@ -1,4 +1,5 @@
 <?php
+// index.php
 //ob_start(); // Turns on output buffering to prevent header errors
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -22,6 +23,7 @@ if (!empty($_SESSION['success_message'])): ?>
         ?>
     </div>
 <?php endif; ?>
+
 <?php
 $action = filter_input(INPUT_POST, 'action');
 if ($action === NULL) {
@@ -29,6 +31,12 @@ if ($action === NULL) {
     if ($action === NULL) {
         $action = 'show_home';
     }
+}
+
+// 🔒 Enforce HTTPS for sensitive actions (Slide 39)
+$secure_actions = ['signup', 'login', 'register_new_gym', 'upload_gym_photo', 'my_reservations'];
+if (in_array($action, $secure_actions)) {
+    require_once('./Util/secure_conn.php');
 }
 
 switch ($action) {
@@ -45,58 +53,71 @@ switch ($action) {
         header("Location: ./Model/logout.php");
         break;
 
+    /* ==========================================================================
+       🔒 ADMINISTRATOR PRIVILEGED ACCESSIBILITY GATES (Slide 54 & 60)
+       ========================================================================== */
     case 'my_gyms':
-        require_once('./Model/database.php');
-        require_once('./Model/gym_db.php'); 
-        
-        $gyms = get_gyms_by_owner($pdo, $_SESSION['user_id']);
-        include("./View/mygyms_page.php");
-        break;
     case 'register_new_gym':
-        include('./View/register_gym.php');
+    case 'edit_gym_form':
+    case 'update_gym':
+    case 'add_event_form':
+    case 'delete_event':
+    case 'update_event':
+        if (!isset($_SESSION['user_id']) || ($_SESSION['is_admin'] ?? 0) !== 1) {
+            $_SESSION['error_message'] = "Access denied. Administrator privileges are required.";
+            header("Location: .?action=login");
+            exit();
+        }
+        
+        if ($action === 'my_gyms') {
+            require_once('./Model/database.php');
+            require_once('./Model/gym_db.php'); 
+            $gyms = get_gyms_by_owner($pdo, $_SESSION['user_id']);
+            include("./View/mygyms_page.php");
+        } elseif ($action === 'register_new_gym') {
+            include('./View/register_gym.php');
+        } elseif ($action === 'edit_gym_form') {
+            include('./View/edit_gym_form.php');
+        } elseif ($action === 'update_gym') {
+            include('./Model/process_gym_update.php');
+        } elseif ($action === 'add_event_form') {
+            include('./View/add_event_form.php');
+        } elseif ($action === 'edit_event_form') {
+            include('./View/edit_event_form.php');
+        } elseif ($action === 'update_event') {
+            include('./Model/process_event_update.php');
+        } else {
+            include('./Model/process_event_deletion.php');
+        }
+        break;
+
+    /* ==========================================================================
+       🔒 CLIENT BOOKING TIMELINE ACCESSIBILITY GATES
+       ========================================================================== */
+    case 'my_reservations':
+    case 'reserve_spot':
+    case 'cancel_reservation':
+        if (!isset($_SESSION['user_id'])) {
+            $_SESSION['error_message'] = "Please log in to manage your session bookings.";
+            header("Location: .?action=login");
+            exit();
+        }
+
+        if ($action === 'my_reservations') {
+            include('./Model/get_reservations.php');   
+        } elseif ($action === 'reserve_spot') {
+            include('./Model/process_reservation.php');
+        } else {
+            include('./Model/process_cancellation.php');
+        }
         break;
 
     case 'view_gym':
         include('./View/view_gym.php');
         break;
 
-    case 'add_event_form':
-        include('./View/add_event_form.php');
-        break;
     case 'show_gyms':
         include('./Model/get_available_gyms.php');
-        break;
-
-    case 'reserve_spot':
-        include('./Model/process_reservation.php');
-        break;
-
-    case 'my_reservations':
-        include('./Model/get_reservations.php');   // Fetches user reservations
-        break;
-    
-    case 'cancel_reservation':
-        include('./Model/process_cancellation.php');
-        break;
-
-    case 'edit_gym_form':
-        include('./View/edit_gym_form.php');
-        break;
-
-    case 'update_gym':
-        include('./Model/process_gym_update.php'); // The script that processes the form
-        break;
-
-    case 'edit_event_form':
-        include('./View/edit_event_form.php');
-        break;
-
-    case 'delete_event':
-        include('./Model/process_event_deletion.php'); // Script executing: DELETE FROM events WHERE id = ?
-        break;
-
-    case 'update_event': 
-        include('./Model/process_event_update.php'); 
         break;
 
     case 'upload_gym_photo':
