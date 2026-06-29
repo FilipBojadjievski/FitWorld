@@ -29,7 +29,19 @@
                     
                     <div class="gym-details-card" style="flex: 1; min-width: 300px;">
                         <img src="uploads/<?= htmlspecialchars($gym['photo'] ?? 'default-gym.jpg') ?>" alt="Gym Photo" style="width: 100%; height: 200px; object-fit: cover; border-radius: 6px; margin-bottom: 15px;">
-                        <h3 class="gym-name" style="margin: 0 0 10px 0; font-size: 24px; color: #333;"><?= htmlspecialchars($gym['name']) ?></h3>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 10px;">
+                            <h3 class="gym-name" style="margin: 0; font-size: 24px; color: #333;"><?= htmlspecialchars($gym['name']) ?></h3>
+                            
+                            <form action="." method="POST" onsubmit="return confirm('Are you sure you want to book a training in this facility?');">
+                                <input type="hidden" name="action" value="reserve_general_training">
+                                <input type="hidden" name="gym_id" value="<?= $gym['id'] ?>">
+                                <button type="submit" style="background: #27ae60; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; white-space: nowrap; transition: background 0.2s;">
+                                    Book a Training
+                                </button>
+                            </form>
+                        </div>
+
                         <p style="color: #777; font-size: 14px; margin-bottom: 10px;">📍 <span class="gym-address"><?= htmlspecialchars($gym['address']) ?></span></p>
                         <p style="font-size: 14px; line-height: 1.5; color: #555;"><?= htmlspecialchars($gym['description']) ?></p>
                         <div style="font-size: 12px; font-weight: bold; color: #2c3e50; background: #ecf0f1; padding: 5px 10px; display: inline-block; border-radius: 4px; margin-top: 10px;">
@@ -98,7 +110,6 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    // --- 1. Autovanish Alert Logic (Existing) ---
     const alerts = document.querySelectorAll('.msg.success-msg, .msg.error-msg');
     alerts.forEach(function(alert) {
         alert.style.transition = "opacity 1s ease, filter 1s ease, transform 1s ease";
@@ -110,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 5000);
     });
 
-   const searchInput = document.getElementById('gymSearchInput');
+    const searchInput = document.getElementById('gymSearchInput');
     const catalogList = document.getElementById('gymsCatalogList');
     const gymCards = Array.from(document.querySelectorAll('.gym-card-wrapper'));
     const noResultsMessage = document.getElementById('noResultsMessage');
@@ -120,15 +131,12 @@ document.addEventListener("DOMContentLoaded", function() {
             const searchTerm = e.target.value.toLowerCase().trim();
             
             if (searchTerm === "") {
-                // If the search bar is empty, restore the original database order
                 gymCards.forEach(card => card.style.display = "flex");
                 noResultsMessage.style.display = "none";
                 return;
             }
 
             let visibleCount = 0;
-
-            // 1. Filter out cards that don't match the name at all
             const matchingCards = gymCards.filter(function(card) {
                 const gymName = card.querySelector('.gym-name').textContent.toLowerCase();
                 
@@ -142,32 +150,25 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
 
-            // 2. Sort matching cards based on the index position of the search term
             matchingCards.sort(function(a, b) {
                 const nameA = a.querySelector('.gym-name').textContent.toLowerCase();
                 const nameB = b.querySelector('.gym-name').textContent.toLowerCase();
                 
                 const indexA = nameA.indexOf(searchTerm);
                 const indexB = nameB.indexOf(searchTerm);
-                
-                // Lower index means it appears closer to the start of the string
                 return indexA - indexB;
             });
 
-            // 3. Re-append the sorted elements back into the DOM wrapper container
             matchingCards.forEach(function(card) {
                 catalogList.appendChild(card);
             });
 
-            // Toggle no results notice based on match count
             if (visibleCount === 0 && gymCards.length > 0) {
                 noResultsMessage.style.display = "block";
             } else {
                 noResultsMessage.style.display = "none";
             }
         });
-        
-        // Add active glowing border indicator state on focus
         searchInput.addEventListener('focus', function() { this.style.borderColor = "#3498db"; });
         searchInput.addEventListener('blur', function() { this.style.borderColor = "#ccc"; });
     }

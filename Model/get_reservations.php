@@ -7,21 +7,23 @@ $upcoming_reservations = [];
 $past_reservations = [];
 
 if ($userId) { 
+    // 🌟 MODIFIED: Switched to LEFT JOIN on events and dynamic COALESCE to pull general training cleanly
     $sql = "SELECT 
                 es.id AS signup_id,
                 es.signed_up_at,
-                e.title AS event_title, 
-                e.date AS event_date, 
-                e.start_time, 
-                e.end_time, 
-                e.description AS event_description,
+                es.event_id,
+                IFNULL(e.title, 'General Training') AS event_title, 
+                IFNULL(e.date, DATE(es.signed_up_at)) AS event_date, 
+                IFNULL(e.start_time, TIME(es.signed_up_at)) AS start_time, 
+                IFNULL(e.end_time, '23:59:59') AS end_time, 
+                IFNULL(e.description, 'Individual session booking at the facility.') AS event_description,
                 g.name AS gym_name,
                 g.address AS gym_address
             FROM event_signups es
-            JOIN events e ON es.event_id = e.id
-            JOIN gyms g ON e.gym_id = g.id
+            LEFT JOIN events e ON es.event_id = e.id
+            JOIN gyms g ON (e.gym_id = g.id OR es.gym_id = g.id)
             WHERE es.user_id = ?
-            ORDER BY e.date ASC, e.start_time ASC"; // Fetch sorted chronologically
+            ORDER BY event_date ASC, start_time ASC"; // Fetch sorted chronologically
             
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$userId]);
@@ -48,4 +50,5 @@ if ($userId) {
     $past_reservations = array_reverse($past_reservations);
 }
 
+// 🌟 Make sure your view page parses $upcoming_reservations instead of just $reservations loop variable name!
 include('./View/myreservations_page.php'); // Loads the UI layout page

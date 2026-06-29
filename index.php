@@ -1,6 +1,5 @@
 <?php
-// index.php
-//ob_start(); // Turns on output buffering to prevent header errors
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -33,7 +32,6 @@ if ($action === NULL) {
     }
 }
 
-// 🔒 Enforce HTTPS for sensitive actions (Slide 39)
 $secure_actions = ['signup', 'login', 'register_new_gym', 'upload_gym_photo', 'my_reservations'];
 if (in_array($action, $secure_actions)) {
     require_once('./Util/secure_conn.php');
@@ -53,9 +51,7 @@ switch ($action) {
         header("Location: ./Model/logout.php");
         break;
 
-    /* ==========================================================================
-       🔒 ADMINISTRATOR PRIVILEGED ACCESSIBILITY GATES (Slide 54 & 60)
-       ========================================================================== */
+ 
     case 'my_gyms':
     case 'register_new_gym':
     case 'edit_gym_form':
@@ -91,12 +87,11 @@ switch ($action) {
         }
         break;
 
-    /* ==========================================================================
-       🔒 CLIENT BOOKING TIMELINE ACCESSIBILITY GATES
-       ========================================================================== */
+  
     case 'my_reservations':
     case 'reserve_spot':
     case 'cancel_reservation':
+    case 'reserve_general_training': // 🌟 Added right here to inherit the login check below!
         if (!isset($_SESSION['user_id'])) {
             $_SESSION['error_message'] = "Please log in to manage your session bookings.";
             header("Location: .?action=login");
@@ -107,6 +102,8 @@ switch ($action) {
             include('./Model/get_reservations.php');   
         } elseif ($action === 'reserve_spot') {
             include('./Model/process_reservation.php');
+        } elseif ($action === 'reserve_general_training') {
+            include('./Model/process_general_training.php'); // 🌟 Includes your new process handler script
         } else {
             include('./Model/process_cancellation.php');
         }
