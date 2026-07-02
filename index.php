@@ -108,6 +108,22 @@ switch ($action) {
             include('./Model/process_cancellation.php');
         }
         break;
+    case 'submit_gym_comment':
+    if (!isset($_SESSION['user_id'])) {
+        $_SESSION['error_message'] = "Please log in to share a review.";
+        header("Location: .?action=login");
+        exit();
+    }
+    include('./Model/process_gym_comment.php');
+    break;
+    case 'delete_gym_comment':
+    if (!isset($_SESSION['user_id'])) {
+        $_SESSION['error_message'] = "Unauthorized access.";
+        header("Location: .?action=login");
+        exit();
+    }
+    include('./Model/delete_gym_comment.php');
+    break;
 
     case 'view_gym':
         include('./View/view_gym.php');
