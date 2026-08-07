@@ -33,7 +33,7 @@ include('./View/header.php');
             <?php foreach ($gyms as $gym): ?>
                 <div class="gym-card">
                     
-                    <div class="gym-card-thumb" style="background-image: url('uploads/<?= htmlspecialchars($gym['photo'] ?? 'default-gym.jpg') ?>');"></div>
+                    <img class="gym-card-thumb" src="uploads/<?= htmlspecialchars($gym['photo'] ?? 'default-gym.jpg') ?>" alt="<?= htmlspecialchars($gym['name']) ?>">
                     
                     <div class="gym-card-body">
                         <span class="status-badge <?= $gym['is_hidden'] ? 'badge-hidden' : 'badge-visible' ?>">
@@ -44,12 +44,12 @@ include('./View/header.php');
                             <h3 class="gym-title"><?= htmlspecialchars($gym['name']) ?></h3>
                         </a>
                         
-                        <form action="." method="POST" enctype="multipart/form-data" class="quick-upload-form" style="margin: 10px 0;">
+                        <form action="." method="POST" enctype="multipart/form-data" class="quick-upload-form">
                             <input type="hidden" name="action" value="upload_gym_photo">
                             <input type="hidden" name="gym_id" value="<?= $gym['id'] ?>">
-                            <label class="custom-file-upload" style="font-size: 12px; cursor: pointer; color: #3498db;">
+                            <label class="custom-file-upload">
                                 📷 Change Photo
-                                <input type="file" name="gym_photo" accept="image/*" onchange="this.form.submit()" style="display: none;">
+                                <input type="file" name="gym_photo" accept="image/*" onchange="this.form.submit()" class="visually-hidden-file">
                             </label>
                         </form>
 

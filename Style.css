@@ -1,11 +1,21 @@
 /* General Page Setup */
+html {
+  min-height: 100%;
+}
+
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background-color: #f4f7f6;
   color: #333;
 }
+
+.Main-Container { display: flex; flex: 1; flex-direction: column; min-height: 0; }
+.Main-Container .Background { flex: 1; }
 
 .container {
   max-width: 1200px;
@@ -30,7 +40,7 @@ body {
 /* Header & Navigation */
 header {
   background-color: #2c3e50;
-  color: white;
+  color: rgb(248, 239, 239);
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
@@ -43,18 +53,29 @@ header h1 {
 }
 
 nav a {
-  color: white;
+  color: rgb(248, 239, 239);
   text-decoration: none;
   margin-left: 15px;
-  font-weight: 500;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.2px;
 }
 
 nav a:hover {
   text-decoration: underline;
 }
 
-.nav-admin {
-  color: #f1c40f !important;
+nav a.nav-active {
+  color: #89a1d8;
+}
+
+.nav-logout {
+  color: rgb(248, 239, 239);
+  font-weight: 900;
+}
+
+.nav-logout:hover {
+  color: #ff8a8e;
 }
 
 /* Hero Welcome Section */
@@ -92,6 +113,14 @@ nav a:hover {
   background-color: #c0392b;
 }
 
+.hero-cta {
+  background-color: #481f8c;
+}
+
+.hero-cta:hover {
+  background-color: #906dcf;
+}
+
 /* Gym Grid/List Section */
 .gyms-section {
   margin-top: 3rem;
@@ -106,6 +135,7 @@ footer {
   position: relative;
   bottom: 0;
   width: 100%;
+  margin-top: auto;
 }
 /* Auth Layout Container (Centers the form nicely inside your layout) */
 .auth-container {
@@ -217,7 +247,7 @@ footer {
 }
 /* Clean up the card box container to host an image top-cap */
 .gym-card {
-  background: #ffffff;
+  background: rgb(204, 203, 203);
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   overflow: hidden; /* Clips the background image to the card border radius */
@@ -233,6 +263,8 @@ footer {
 /* Dashboard Card Thumbnail box */
 .gym-card-thumb {
   height: 160px;
+  width: 100%;
+  object-fit: cover;
   background-size: cover;
   background-position: center;
   background-color: #cbd5e1;
@@ -249,12 +281,15 @@ footer {
 .gym-title {
   margin: 0 0 8px 0;
   font-size: 1.25rem;
-  color: #0f172a;
+  color: #010c1c;
+}
+.gym-title:hover{
+  color: rgb(103, 138, 184);
 }
 
 .gym-description-snippet {
   font-size: 0.9rem;
-  color: #64748b;
+  color: #010c1c;
   line-height: 1.5;
   margin: 0 0 16px 0;
   flex-grow: 1; /* Keeps footer contents perfectly aligned cross-row */
@@ -279,6 +314,181 @@ footer {
   border-radius: 20px;
   font-weight: 600;
 }
+
+/* Centered, compact owner dashboard cards */
+.dashboard-container {
+  width: 100%;
+  max-width: 1100px;
+  box-sizing: border-box;
+  margin: 40px auto;
+  padding: 0 24px;
+}
+
+.dashboard-header,
+.action-footer {
+  text-align: center;
+}
+
+.dashboard-container .gyms-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  margin: 30px auto;
+}
+
+.dashboard-container .gym-card {
+  width: 100%;
+  max-width: none;
+}
+
+.dashboard-container .gym-card-link {
+  text-decoration: none;
+}
+
+.dashboard-container .gym-card-link:hover {
+  text-decoration: none;
+}
+
+.dashboard-container .custom-file-upload {
+  color: #145a9c;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.dashboard-container .custom-file-upload:hover {
+  color: #0b3d70;
+}
+
+.quick-upload-form { margin: 10px 0; }
+.visually-hidden-file { display: none; }
+.btn-no-top-margin, .btn-edit-save { margin-top: 0; }
+.btn-edit-save { background-color: #e67e22; border: none; border-color: #e67e22; }
+.admin-flash-message { position: static; transform: none; margin: 15px auto; max-width: 1000px; text-align: center; }
+.header-actions { display: flex; align-items: center; gap: 12px; }
+.admin-event-buttons { display: flex; gap: 8px; }
+.edit-event-btn { padding: 6px 12px; font-size: 12px; }
+.marginless-form { margin: 0; }
+.btn-delete-event, .reservation-cancel-btn { background: #e74c3c; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; transition: background 0.2s; }
+.btn-delete-event:hover, .reservation-cancel-btn:hover { background: #c0392b; }
+
+.catalog-container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+.reservations-container {
+  width: 100%;
+  max-width: 1100px;
+  box-sizing: border-box;
+  margin: 40px auto;
+  padding: 0 24px;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.content-wrapper { flex: 1; }
+.catalog-header { margin-bottom: 30px; text-align: center; }
+.catalog-subtitle { color: #666; }
+.page-flash-message { position: static; transform: none; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+.reservations-heading { padding-bottom: 8px; margin-bottom: 20px; }
+.upcoming-heading { color: #2c3e50; border-bottom: 2px solid #3498db; }
+.history-heading { color: #7f8c8d; border-bottom: 2px solid #bdc3c7; margin-top: 20px; }
+.reservations-empty { padding: 20px; text-align: center; border-radius: 8px; }
+.upcoming-empty { background: #fdfefe; border: 1px dashed #cbd5e1; color: #7f8c8d; margin-bottom: 40px; }
+.history-empty { background: #f8fafc; border: 1px solid #e2e8f0; color: #94a3b8; }
+.upcoming-reservations-list { margin-bottom: 40px; }
+.past-reservations-list { opacity: .75; }
+.reservation-row { display: flex; align-items: center; justify-content: space-between; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 12px; }
+.upcoming-reservation-row { background: #fff; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,.02); }
+.past-reservation-row { background: #f8fafc; padding: 15px 20px; }
+.reservation-gym-name { font-weight: bold; color: #e67e22; font-size: .9rem; display: block; margin-bottom: 4px; }
+.reservation-title { margin: 0 0 6px; color: #2c3e50; font-size: 1.15rem; }
+.reservation-description { margin: 0 0 8px; color: #64748b; font-size: .9rem; line-height: 1.4; }
+.reservation-time { color: #475569; font-size: .9rem; font-weight: 600; }
+.past-gym-name { font-weight: 500; color: #7f8c8d; font-size: .85rem; display: block; margin-bottom: 2px; }
+.past-reservation-title { margin: 0 0 4px; color: #7f8c8d; font-size: 1.05rem; text-decoration: line-through; }
+.past-reservation-description { margin: 0 0 6px; color: #94a3b8; font-size: .85rem; line-height: 1.4; font-style: italic; }
+.past-reservation-date { color: #94a3b8; font-size: .85rem; }
+.attended-badge { background: #e2e8f0; color: #64748b; font-size: 11px; padding: 4px 10px; border-radius: 4px; font-weight: bold; }
+.msg { transition: opacity 1s ease, filter 1s ease, transform 1s ease; }
+.message-fading { opacity: 0; filter: blur(10px); transform: translateY(-10px); }
+
+.search-bar-container { max-width: 500px; margin: 0 auto 40px; position: relative; }
+#gymSearchInput { width: 100%; box-sizing: border-box; padding: 12px 20px; font-size: 16px; border: 1px solid #ccc; border-radius: 25px; outline: none; transition: border-color .3s ease; box-shadow: 0 2px 5px rgba(0,0,0,.05); }
+#gymSearchInput:focus { border-color: #3498db; }
+.gym-card-wrapper { background: #fff; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 30px; padding: 20px; display: flex; gap: 20px; flex-wrap: wrap; transition: all .3s ease; }
+.gym-details-card { flex: 1; min-width: 300px; }
+.catalog-gym-photo { width: 100%; height: 180px; object-fit: cover; border-radius: 6px; margin-bottom: 15px; }
+.gym-primary-actions { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.gym-name { margin: 0; font-size: 22px; color: #333; }
+.gym-action-buttons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.gym-action-buttons form { margin: 0; }
+.book-training-btn, .contact-gym-btn { color: #fff; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; width: 100%; transition: background .2s; }
+.book-training-btn { background: #27ae60; }
+.contact-gym-btn { background: #3498db; }
+.inline-contact-form { display: none; flex-direction: column; gap: 8px; margin-top: 10px; }
+.inline-contact-message { width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid #ccc; border-radius: 4px; resize: vertical; }
+.inline-contact-submit { background: #2c3e50; color: #fff; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+.catalog-gym-address { color: #777; font-size: 13px; margin-bottom: 8px; }
+.catalog-gym-description { font-size: 13px; line-height: 1.5; color: #555; }
+.catalog-gym-hours { font-size: 11px; font-weight: bold; color: #2c3e50; background: #ecf0f1; padding: 5px 10px; display: inline-block; border-radius: 4px; margin-top: 10px; }
+.gym-interactive-pane { flex: 2; min-width: 320px; border-left: 1px solid #eee; padding-left: 20px; display: flex; flex-direction: column; justify-content: space-between; max-height: 420px; }
+.star-rating-container { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 4px; margin-bottom: 5px; }
+.star-rating-container input[type="radio"] { display: none; }
+.star-rating-container label { font-size: 20px; color: #ddd; cursor: pointer; transition: color .15s ease; }
+.star-rating-container input[type="radio"]:checked ~ label, .star-rating-container label:hover, .star-rating-container label:hover ~ label { color: #f1c40f; }
+.gym-tab-header { font-size: 16px; font-weight: bold; cursor: pointer; padding-bottom: 5px; color: #7f8c8d; transition: all .2s ease; border-bottom: 2px solid transparent; }
+.gym-tab-header.active-classes-tab { color: #3498db; border-bottom-color: #3498db; }
+.gym-tab-header.active-reviews-tab { color: #e67e22; border-bottom-color: #e67e22; }
+.gym-tabs { display: flex; gap: 20px; border-bottom: 1px solid #eee; margin-bottom: 15px; }
+.tab-content-pane-classes { flex-grow: 1; overflow-y: auto; padding-right: 5px; }
+.catalog-events-stack { display: flex; flex-direction: column; gap: 12px; }
+.catalog-event-row { border: 1px solid #f0f0f0; background: #fafafa; padding: 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+.catalog-event-title { margin: 0 0 3px; font-size: 14px; color: #333; }
+.catalog-event-time { font-size: 11px; color: #e67e22; font-weight: bold; }
+.event-booking-actions { display: flex; align-items: center; gap: 12px; }
+.spots-left { font-size: 11px; font-weight: bold; }
+.spots-available { color: #27ae60; } .spots-full { color: #c0392b; }
+.event-book-btn, .event-full-btn { border: none; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+.event-book-btn { background: #3498db; color: #fff; cursor: pointer; }
+.event-full-btn { background: #bdc3c7; color: #7f8c8d; cursor: not-allowed; }
+.no-events-message { color: #999; font-style: italic; font-size: 13px; margin-top: 20px; text-align: center; }
+.tab-content-pane-reviews { display: none; flex-grow: 1; flex-direction: column; justify-content: space-between; overflow: hidden; }
+.comments-wall { overflow-y: auto; display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px; padding-right: 5px; height: 260px; }
+.review-card { background: #fdfefe; border: 1px solid #eaecee; padding: 10px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,.02); position: relative; }
+.review-header, .reply-header { display: flex; justify-content: space-between; align-items: center; }
+.review-header { margin-bottom: 4px; padding-right: 25px; }
+.review-author { font-size: 12px; color: #2c3e50; } .review-date { font-size: 10px; color: #aaa; }
+.delete-review-form { position: absolute; top: 8px; right: 8px; margin: 0; }
+.delete-review-btn, .delete-reply-btn { background: none; border: none; cursor: pointer; opacity: .5; }
+.delete-review-btn { font-size: 12px; }
+.review-stars { color: #f1c40f; font-size: 11px; margin-bottom: 4px; } .empty-stars { color: #ddd; }
+.review-comment { margin: 0; font-size: 12px; color: #555; line-height: 1.4; }
+.review-reply-action { margin-top: 6px; text-align: right; }
+.reply-toggle { font-size: 11px; color: #3498db; cursor: pointer; font-weight: bold; text-decoration: underline; }
+.reply-form { display: none; gap: 5px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #eee; }
+.reply-input { flex-grow: 1; padding: 6px 10px; font-size: 11px; border: 1px solid #ddd; border-radius: 4px; outline: none; }
+.reply-submit { background: #3498db; color: #fff; border: none; padding: 6px 10px; font-size: 11px; font-weight: bold; border-radius: 4px; cursor: pointer; }
+.review-reply { background: #f8f9fa; border-left: 2px solid #cbd5e1; margin: -10px 0 12px 25px; padding: 6px 10px 8px 15px; border-radius: 0 6px 6px 0; font-size: 11px; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,.01); }
+.reply-arrow { position: absolute; left: 4px; top: 6px; color: #94a3b8; font-size: 12px; font-weight: bold; }
+.reply-header { margin-bottom: 2px; padding-right: 20px; }
+.reply-author { color: #475569; font-size: 11px; } .reply-date { font-size: 9px; color: #94a3b8; }
+.delete-reply-form { position: absolute; top: 6px; right: 6px; margin: 0; } .delete-reply-btn { font-size: 11px; opacity: .4; }
+.reply-comment { margin: 0; color: #475569; font-size: 11px; line-height: 1.4; }
+.no-comments-msg { color: #bbb; font-style: italic; font-size: 12px; text-align: center; margin-top: 30px; }
+.review-form { display: flex; flex-direction: column; gap: 5px; margin: 0; background: #fff; padding-top: 5px; border-top: 1px solid #f1f1f1; }
+.review-input-row { display: flex; gap: 5px; width: 100%; }
+.review-input { flex-grow: 1; padding: 8px 12px; font-size: 12px; border: 1px solid #ddd; border-radius: 4px; outline: none; }
+.review-submit { background: #e67e22; color: #fff; border: none; padding: 8px 14px; font-size: 12px; font-weight: bold; border-radius: 4px; cursor: pointer; }
+.review-login-prompt { font-size: 11px; color: #7f8c8d; text-align: center; margin: 0; padding-top: 10px; border-top: 1px solid #f1f1f1; }
+.review-login-prompt a { color: #3498db; font-weight: bold; text-decoration: none; }
+.catalog-empty-message { text-align: center; padding: 40px; color: #7f8c8d; } .hidden-message { display: none; }
+.contact-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); backdrop-filter: blur(5px); z-index: 9999; align-items: center; justify-content: center; }
+.contact-modal-dialog { background: white; width: 90%; max-width: 500px; padding: 25px; border-radius: 10px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+.contact-modal-close { position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 26px; cursor: pointer; color: #777; }
+.contact-modal-title { margin-top: 0; }
+.contact-modal-message { width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid #ccc; border-radius: 6px; resize: vertical; font-family: inherit; font-size: 14px; margin-top: 10px; }
+.contact-modal-submit { width: 100%; margin-top: 12px; background: #3498db; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+.is-hidden, .is-filtered { display: none !important; }
+.inline-contact-form.is-open, .reply-form.is-open, .tab-content-pane-reviews.is-open, .contact-modal.is-open { display: flex; }
 /* Container Box */
 .form-container {
   max-width: 650px;

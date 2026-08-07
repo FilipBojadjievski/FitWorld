@@ -87,7 +87,7 @@ if (!empty($_SESSION['error_message'])): ?>
 
         <div class="form-actions">
             <a href=".?action=view_gym&id=<?= $gym['id'] ?>" class="btn btn-secondary">Cancel Changes</a>
-            <button type="submit" class="btn btn-success" style="background-color: #e67e22; border-color: #e67e22;">Save Changes</button>
+            <button type="submit" class="btn btn-success btn-edit-save">Save Changes</button>
         </div>
 
     </form>

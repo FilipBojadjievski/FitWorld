@@ -1,23 +1,22 @@
 <?php include('./View/header.php'); ?>
 
-<div class="catalog-container" style="max-width: 1200px; margin: 30px auto; padding: 0 20px;">
-    <div class="catalog-header" style="margin-bottom: 30px; text-align: center;">
+<div class="catalog-container">
+    <div class="catalog-header">
         <h2>Explore Available Gym Facilities</h2>
-        <p style="color: #666;">Browse locations, check out ongoing classes, and secure your booking spot.</p>
+        <p class="catalog-subtitle">Browse locations, check out ongoing classes, and secure your booking spot.</p>
     </div>
 
-    <div class="search-bar-container" style="max-width: 500px; margin: 0 auto 40px auto; position: relative;">
-        <input type="text" id="gymSearchInput" placeholder=" Search gyms by name or address..." 
-               style="width: 100%; padding: 12px 20px; font-size: 16px; border: 1px solid #ccc; border-radius: 25px; outline: none; transition: border-color 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+    <div class="search-bar-container">
+        <input type="text" id="gymSearchInput" placeholder=" Search gyms by name or address...">
     </div>
 
     <?php if (!empty($_SESSION['success_message'])): ?>
-        <div class="msg success-msg" style="padding: 15px; background: #d4edda; color: #155724; border-radius: 5px; margin-bottom: 20px;">
+        <div class="msg success-msg page-flash-message">
             <?= htmlspecialchars($_SESSION['success_message']); unset($_SESSION['success_message']); ?>
         </div>
     <?php endif; ?>
     <?php if (!empty($_SESSION['error_message'])): ?>
-        <div class="msg error-msg" style="padding: 15px; background: #f8d7da; color: #721c24; border-radius: 5px; margin-bottom: 20px;">
+        <div class="msg error-msg page-flash-message">
             <?= htmlspecialchars($_SESSION['error_message']); unset($_SESSION['error_message']); ?>
         </div>
     <?php endif; ?>
@@ -25,36 +24,32 @@
     <div class="gyms-catalog-list" id="gymsCatalogList">
         <?php if (!empty($gyms_catalog)): ?>
             <?php foreach ($gyms_catalog as $gym): ?>
-                <div class="gym-facility-section gym-card-wrapper" style="background: #fff; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 30px; padding: 20px; display: flex; gap: 20px; flex-wrap: wrap; transition: all 0.3s ease;">
+                <div class="gym-facility-section gym-card-wrapper">
                     
-                    <div class="gym-details-card" style="flex: 1; min-width: 300px;">
-                        <img src="uploads/<?= htmlspecialchars($gym['photo'] ?? 'default-gym.jpg') ?>" alt="Gym Photo" style="width: 100%; height: 180px; object-fit: cover; border-radius: 6px; margin-bottom: 15px;">
+                    <div class="gym-details-card">
+                        <img class="catalog-gym-photo" src="uploads/<?= htmlspecialchars($gym['photo'] ?? 'default-gym.jpg') ?>" alt="Gym Photo">
                         
-                        <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px;">
-                            <h3 class="gym-name" style="margin: 0; font-size: 22px; color: #333;"><?= htmlspecialchars($gym['name']) ?></h3>
-                            
-                            <form action="." method="POST" onsubmit="return confirm('Are you sure you want to book a training in this facility?');">
-                                <input type="hidden" name="action" value="reserve_general_training">
-                                <input type="hidden" name="gym_id" value="<?= $gym['id'] ?>">
-                                <button type="submit" style="background: #27ae60; color: #fff; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; width: 100%; transition: background 0.2s;">
-                                    Book a Training
-                                </button>
-                            </form>
-                            <button
-    type="button"
-    onclick="openContactModal(<?= $gym['id'] ?>, '<?= htmlspecialchars($gym['name'], ENT_QUOTES) ?>')"
-    style="background: #3498db; color: #fff; border: none; padding: 8px 12px;
-           border-radius: 4px; cursor: pointer; font-size: 13px;
-           font-weight: bold; width: 100%; margin-top: 8px;"
->
-    Contact
-</button>
+                        <div class="gym-primary-actions">
+                            <h3 class="gym-name"><?= htmlspecialchars($gym['name']) ?></h3>
+
+                            <div class="gym-action-buttons">
+                                <form action="." method="POST" onsubmit="return confirm('Are you sure you want to book a training in this facility?');">
+                                    <input type="hidden" name="action" value="reserve_general_training">
+                                    <input type="hidden" name="gym_id" value="<?= $gym['id'] ?>">
+                                    <button type="submit" class="book-training-btn">Book a Training</button>
+                                </form>
+                                <button
+                                    type="button"
+                                    onclick="openContactModal(<?= $gym['id'] ?>, '<?= htmlspecialchars($gym['name'], ENT_QUOTES) ?>')"
+                                    class="contact-gym-btn"
+                                >Contact</button>
+                            </div>
 
 <form
     id="contactForm-<?= $gym['id'] ?>"
     action="."
     method="POST"
-    style="display: none; flex-direction: column; gap: 8px; margin-top: 10px;"
+    class="inline-contact-form"
 >
     <input type="hidden" name="action" value="contact_gym">
     <input type="hidden" name="gym_id" value="<?= $gym['id'] ?>">
@@ -64,74 +59,61 @@
         placeholder="Write your message..."
         required
         rows="4"
-        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; resize: vertical;"
+        class="inline-contact-message"
     ></textarea>
 
     <button
         type="submit"
-        style="background: #2c3e50; color: #fff; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;"
+        class="inline-contact-submit"
     >
         Send
     </button>
 </form>
                         </div>
 
-                        <p style="color: #777; font-size: 13px; margin-bottom: 8px;">📍 <span class="gym-address"><?= htmlspecialchars($gym['address']) ?></span></p>
-                        <p style="font-size: 13px; line-height: 1.5; color: #555;"><?= htmlspecialchars($gym['description']) ?></p>
-                        <div style="font-size: 11px; font-weight: bold; color: #2c3e50; background: #ecf0f1; padding: 5px 10px; display: inline-block; border-radius: 4px; margin-top: 10px;">
+                        <p class="catalog-gym-address">📍 <span class="gym-address"><?= htmlspecialchars($gym['address']) ?></span></p>
+                        <p class="catalog-gym-description"><?= htmlspecialchars($gym['description']) ?></p>
+                        <div class="catalog-gym-hours">
                              Hours: <?= date('H:i', strtotime($gym['opening_hour'])) ?> - <?= date('H:i', strtotime($gym['closing_hour'])) ?>
                         </div>
                     </div>
 
-                    <div class="gym-interactive-pane" style="flex: 2; min-width: 320px; border-left: 1px solid #eee; padding-left: 20px; display: flex; flex-direction: column; justify-content: space-between; max-height: 420px;">
+                    <div class="gym-interactive-pane">
                         
-                        <style>
-                            .star-rating-container { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 4px; margin-bottom: 5px; }
-                            .star-rating-container input[type="radio"] { display: none; }
-                            .star-rating-container label { font-size: 20px; color: #ddd; cursor: pointer; transition: color 0.15s ease; }
-                            .star-rating-container input[type="radio"]:checked ~ label,
-                            .star-rating-container label:hover,
-                            .star-rating-container label:hover ~ label { color: #f1c40f; }
-                            
-                            .gym-tab-header { font-size: 16px; font-weight: bold; cursor: pointer; padding-bottom: 5px; color: #7f8c8d; transition: all 0.2s ease; border-bottom: 2px solid transparent; }
-                            .gym-tab-header.active-classes-tab { color: #3498db; border-bottom: 2px solid #3498db; }
-                            .gym-tab-header.active-reviews-tab { color: #e67e22; border-bottom: 2px solid #e67e22; }
-                        </style>
-
-                        <div style="display: flex; gap: 20px; border-bottom: 1px solid #eee; margin-bottom: 15px;">
+                        <div class="gym-tabs">
                             <span class="gym-tab-header active-classes-tab" id="tabClassesBtn-<?= $gym['id'] ?>" onclick="switchGymTab(<?= $gym['id'] ?>, 'classes')">Events</span>
                             <span class="gym-tab-header" id="tabReviewsBtn-<?= $gym['id'] ?>" onclick="switchGymTab(<?= $gym['id'] ?>, 'reviews')">Reviews (<?= count($gym['reviews'] ?? []) ?>)</span>
                         </div>
         
-                        <div class="tab-content-pane-classes" id="paneClasses-<?= $gym['id'] ?>" style="flex-grow: 1; overflow-y: auto; padding-right: 5px;">
+                        <div class="tab-content-pane-classes" id="paneClasses-<?= $gym['id'] ?>">
                             <?php if (!empty($gym['events'])): ?>
-                                <div class="events-stack" style="display: flex; flex-direction: column; gap: 12px;">
+                                <div class="events-stack catalog-events-stack">
                                     <?php foreach ($gym['events'] as $event): 
                                         $spots_left = $event['participant_limit'] - $event['signup_count'];
                                     ?>
-                                        <div class="event-row-item" style="border: 1px solid #f0f0f0; background: #fafafa; padding: 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; gap: 15px;">
+                                        <div class="event-row-item catalog-event-row">
                                             <div class="event-info-track">
-                                                <h5 style="margin: 0 0 3px 0; font-size: 14px; color: #333;"><?= htmlspecialchars($event['title']) ?></h5>
-                                                <span style="font-size: 11px; color: #e67e22; font-weight: bold;">
+                                                <h5 class="catalog-event-title"><?= htmlspecialchars($event['title']) ?></h5>
+                                                <span class="catalog-event-time">
                                                      📅 <?= date('M d', strtotime($event['date'])) ?> | ⏰ <?= date('H:i', strtotime($event['start_time'])) ?>
                                                 </span>
                                             </div>
                                             
-                                            <div class="event-booking-actions" style="display: flex; align-items: center; gap: 12px;">
-                                                <div style="font-size: 11px; color: <?= $spots_left > 0 ? '#27ae60' : '#c0392b' ?>; font-weight: bold;">
+                                            <div class="event-booking-actions">
+                                                <div class="spots-left <?= $spots_left > 0 ? 'spots-available' : 'spots-full' ?>">
                                                     👥 <?= $spots_left ?> open
                                                 </div>
                                             
                                                 <?php if ($spots_left > 0): ?>
-                                                    <form action="." method="POST" style="margin: 0;">
+                                                    <form action="." method="POST" class="marginless-form">
                                                         <input type="hidden" name="action" value="reserve_spot">
                                                         <input type="hidden" name="event_id" value="<?= $event['id'] ?>">
-                                                        <button type="submit" style="background: #3498db; color: #fff; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">
+                                                        <button type="submit" class="event-book-btn">
                                                             Book
                                                         </button>
                                                     </form>
                                                 <?php else: ?>
-                                                    <button disabled style="background: #bdc3c7; color: #7f8c8d; border: none; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: not-allowed;">
+                                                    <button disabled class="event-full-btn">
                                                          Full
                                                     </button>
                                                 <?php endif; ?>
@@ -140,86 +122,86 @@
                                     <?php endforeach; ?>
                                 </div>
                             <?php else: ?>
-                                <p style="color: #999; font-style: italic; font-size: 13px; margin-top: 20px; text-align: center;">No ongoing fitness classes scheduled.</p>
+                                <p class="no-events-message">No ongoing fitness classes scheduled.</p>
                             <?php endif; ?>
                         </div>
 
-                        <div class="tab-content-pane-reviews" id="paneReviews-<?= $gym['id'] ?>" style="display: none; flex-grow: 1; flex-direction: column; justify-content: space-between; overflow: hidden;">
-            <div class="comments-wall" style="overflow-y: auto; display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px; padding-right: 5px; height: 260px;">
+                        <div class="tab-content-pane-reviews" id="paneReviews-<?= $gym['id'] ?>">
+            <div class="comments-wall">
     <?php if (!empty($gym['reviews'])): ?>
         <?php foreach ($gym['reviews'] as $review): ?>
-            <div style="background: #fdfefe; border: 1px solid #eaecee; padding: 10px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); position: relative;">
+            <div class="review-card">
                 
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; padding-right: 25px;">
-                    <strong style="font-size: 12px; color: #2c3e50;">@<?= htmlspecialchars($review['username']) ?></strong>
-                    <span style="font-size: 10px; color: #aaa;"><?= date('M d, H:i', strtotime($review['created_at'])) ?></span>
+                <div class="review-header">
+                    <strong class="review-author">@<?= htmlspecialchars($review['username']) ?></strong>
+                    <span class="review-date"><?= date('M d, H:i', strtotime($review['created_at'])) ?></span>
                 </div>
                 
                 <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $review['user_id']): ?>
-                    <form action="." method="POST" style="position: absolute; top: 8px; right: 8px; margin: 0;" onsubmit="return confirm('Are you sure you want to delete this comment?');">
+                    <form action="." method="POST" class="delete-review-form" onsubmit="return confirm('Are you sure you want to delete this comment?');">
                         <input type="hidden" name="action" value="delete_gym_comment">
                         <input type="hidden" name="review_id" value="<?= $review['id'] ?>">
-                        <button type="submit" style="background: none; border: none; cursor: pointer; font-size: 12px; opacity: 0.5;" title="Delete">🗑️</button>
+                        <button type="submit" class="delete-review-btn" title="Delete">🗑️</button>
                     </form>
                 <?php endif; ?>
                 
                 <?php if (!empty($review['rating'])): ?>
-                    <div style="color: #f1c40f; font-size: 11px; margin-bottom: 4px;">
-                        <?= str_repeat('★', $review['rating']) ?><span style="color: #ddd;"><?= str_repeat('★', 5 - $review['rating']) ?></span>
+                    <div class="review-stars">
+                        <?= str_repeat('★', $review['rating']) ?><span class="empty-stars"><?= str_repeat('★', 5 - $review['rating']) ?></span>
                     </div>
                 <?php endif; ?>
 
                 <?php if (!empty(trim($review['comment'] ?? ''))): ?>
-                    <p style="margin: 0; font-size: 12px; color: #555; line-height: 1.4;"><?= htmlspecialchars($review['comment']) ?></p>
+                    <p class="review-comment"><?= htmlspecialchars($review['comment']) ?></p>
                 <?php endif; ?>
 
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <div style="margin-top: 6px; text-align: right;">
-                        <span onclick="toggleReplyForm(<?= $review['id'] ?>)" style="font-size: 11px; color: #3498db; cursor: pointer; font-weight: bold; text-decoration: underline;">Reply</span>
+                    <div class="review-reply-action">
+                        <span onclick="toggleReplyForm(<?= $review['id'] ?>)" class="reply-toggle">Reply</span>
                     </div>
 
-                    <form id="replyForm-<?= $review['id'] ?>" action="." method="POST" style="display: none; gap: 5px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #eee;">
+                    <form id="replyForm-<?= $review['id'] ?>" action="." method="POST" class="reply-form">
                         <input type="hidden" name="action" value="submit_gym_comment">
                         <input type="hidden" name="gym_id" value="<?= $gym['id'] ?>">
                         <input type="hidden" name="parent_id" value="<?= $review['id'] ?>">
-                        <input type="text" name="comment_text" placeholder="Reply to @<?= htmlspecialchars($review['username']) ?>..." required style="flex-grow: 1; padding: 6px 10px; font-size: 11px; border: 1px solid #ddd; border-radius: 4px; outline: none;">
-                        <button type="submit" style="background: #3498db; color: #fff; border: none; padding: 6px 10px; font-size: 11px; font-weight: bold; border-radius: 4px; cursor: pointer;">Send</button>
+                        <input type="text" name="comment_text" placeholder="Reply to @<?= htmlspecialchars($review['username']) ?>..." required class="reply-input">
+                        <button type="submit" class="reply-submit">Send</button>
                     </form>
                 <?php endif; ?>
             </div>
 
             <?php if (!empty($review['replies'])): ?>
                 <?php foreach ($review['replies'] as $reply): ?>
-                    <div style="background: #f8f9fa; border-left: 2px solid #cbd5e1; margin-left: 25px; margin-top: -10px; margin-bottom: 12px; padding: 6px 10px 8px 15px; border-radius: 0 6px 6px 0; font-size: 11px; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.01);">
+                    <div class="review-reply">
                         
-                        <span style="position: absolute; left: 4px; top: 6px; color: #94a3b8; font-size: 12px; font-weight: bold;">↳</span>
+                        <span class="reply-arrow">↳</span>
 
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; padding-right: 20px;">
-                            <strong style="color: #475569; font-size: 11px;">@<?= htmlspecialchars($reply['username']) ?></strong>
-                            <span style="font-size: 9px; color: #94a3b8;"><?= date('M d, H:i', strtotime($reply['created_at'])) ?></span>
+                        <div class="reply-header">
+                            <strong class="reply-author">@<?= htmlspecialchars($reply['username']) ?></strong>
+                            <span class="reply-date"><?= date('M d, H:i', strtotime($reply['created_at'])) ?></span>
                         </div>
                         
                         <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $reply['user_id']): ?>
-                            <form action="." method="POST" style="position: absolute; top: 6px; right: 6px; margin: 0;" onsubmit="return confirm('Are you sure you want to delete this reply?');">
+                            <form action="." method="POST" class="delete-reply-form" onsubmit="return confirm('Are you sure you want to delete this reply?');">
                                 <input type="hidden" name="action" value="delete_gym_comment">
                                 <input type="hidden" name="review_id" value="<?= $reply['id'] ?>">
-                                <button type="submit" style="background: none; border: none; cursor: pointer; font-size: 11px; opacity: 0.4;" title="Delete">🗑️</button>
+                                <button type="submit" class="delete-reply-btn" title="Delete">🗑️</button>
                             </form>
                         <?php endif; ?>
 
-                        <p style="margin: 0; color: #475569; font-size: 11px; line-height: 1.4;"><?= htmlspecialchars($reply['comment']) ?></p>
+                        <p class="reply-comment"><?= htmlspecialchars($reply['comment']) ?></p>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
 
         <?php endforeach; ?>
     <?php else: ?>
-        <p class="no-comments-msg" style="color: #bbb; font-style: italic; font-size: 12px; text-align: center; margin-top: 30px;">Be the first to share your training feedback!</p>
+        <p class="no-comments-msg">Be the first to share your training feedback!</p>
     <?php endif; ?>
 </div>
 
                             <?php if (isset($_SESSION['user_id'])): ?>
-                                <form action="." method="POST" style="display: flex; flex-direction: column; gap: 5px; margin: 0; background: #fff; padding-top: 5px; border-top: 1px solid #f1f1f1;">
+                                <form action="." method="POST" class="review-form">
                                     <input type="hidden" name="action" value="submit_gym_comment">
                                     <input type="hidden" name="gym_id" value="<?= $gym['id'] ?>">
                                                     
@@ -231,14 +213,14 @@
                                         <input type="radio" id="star1-<?= $gym['id'] ?>" name="rating" value="1" onclick="handleStarClick(this, 1, <?= $gym['id'] ?>)"><label for="star1-<?= $gym['id'] ?>">★</label>
                                     </div>
 
-                                    <div style="display: flex; gap: 5px; width: 100%;">
-                                        <input type="text" name="comment_text" placeholder="Write a comment..." style="flex-grow: 1; padding: 8px 12px; font-size: 12px; border: 1px solid #ddd; border-radius: 4px; outline: none;">
-                                        <button type="submit" style="background: #e67e22; color: #fff; border: none; padding: 8px 14px; font-size: 12px; font-weight: bold; border-radius: 4px; cursor: pointer;">Post</button>
+                                    <div class="review-input-row">
+                                        <input type="text" name="comment_text" placeholder="Write a comment..." class="review-input">
+                                        <button type="submit" class="review-submit">Post</button>
                                     </div>
                                 </form>
                             <?php else: ?>
-                                <p style="font-size: 11px; color: #7f8c8d; text-align: center; margin: 0; padding-top: 10px; border-top: 1px solid #f1f1f1;">
-                                    Please <a href=".?action=login" style="color: #3498db; font-weight: bold; text-decoration: none;">log in</a> to drop a comment.
+                                <p class="review-login-prompt">
+                                    Please <a href=".?action=login">log in</a> to drop a comment.
                                 </p>
                             <?php endif; ?>
                         </div>
@@ -248,60 +230,28 @@
                 </div>
             <?php endforeach; ?>
             
-            <div id="noResultsMessage" style="display: none; text-align: center; padding: 40px; color: #7f8c8d;">
+            <div id="noResultsMessage" class="catalog-empty-message hidden-message">
                 <p>No matching gym facilities found matching your search term.</p>
             </div>
 
         <?php else: ?>
-            <div style="text-align: center; padding: 40px; color: #7f8c8d;">
+            <div class="catalog-empty-message">
                 <p>There are currently no active public gyms registered on the platform.</p>
             </div>
         <?php endif; ?>
     </div>
-    <div
-    id="contactModal"
-    style="
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.45);
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-        z-index: 9999;
-        align-items: center;
-        justify-content: center;
-    "
->
-    <div
-        style="
-            background: white;
-            width: 90%;
-            max-width: 500px;
-            padding: 25px;
-            border-radius: 10px;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-        "
-    >
+    <div id="contactModal" class="contact-modal">
+    <div class="contact-modal-dialog">
 
         <button
             type="button"
             onclick="closeContactModal()"
-            style="
-                position: absolute;
-                top: 10px;
-                right: 15px;
-                background: none;
-                border: none;
-                font-size: 26px;
-                cursor: pointer;
-                color: #777;
-            "
+            class="contact-modal-close"
         >
             &times;
         </button>
 
-        <h3 id="contactModalTitle" style="margin-top: 0;">
+        <h3 id="contactModalTitle" class="contact-modal-title">
             Contact Gym
         </h3>
 
@@ -319,32 +269,12 @@
                 placeholder="Write your message..."
                 required
                 rows="6"
-                style="
-                    width: 100%;
-                    box-sizing: border-box;
-                    padding: 12px;
-                    border: 1px solid #ccc;
-                    border-radius: 6px;
-                    resize: vertical;
-                    font-family: inherit;
-                    font-size: 14px;
-                    margin-top: 10px;
-                "
+                class="contact-modal-message"
             ></textarea>
 
             <button
                 type="submit"
-                style="
-                    width: 100%;
-                    margin-top: 12px;
-                    background: #3498db;
-                    color: white;
-                    border: none;
-                    padding: 10px;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    font-weight: bold;
-                "
+                class="contact-modal-submit"
             >
                 Send Message
             </button>
@@ -364,13 +294,13 @@ function switchGymTab(gymId, targetTab) {
     const reviewsBtn = document.getElementById('tabReviewsBtn-' + gymId);
 
     if (targetTab === 'classes') {
-        classesPane.style.display = "block";
-        reviewsPane.style.display = "none";
+        classesPane.classList.remove('is-hidden');
+        reviewsPane.classList.remove('is-open');
         classesBtn.classList.add('active-classes-tab');
         reviewsBtn.classList.remove('active-reviews-tab');
     } else {
-        classesPane.style.display = "none";
-        reviewsPane.style.display = "flex"; 
+        classesPane.classList.add('is-hidden');
+        reviewsPane.classList.add('is-open');
         classesBtn.classList.remove('active-classes-tab');
         reviewsBtn.classList.add('active-reviews-tab');
     }
@@ -378,19 +308,11 @@ function switchGymTab(gymId, targetTab) {
 function toggleContactForm(gymId) {
     const form = document.getElementById('contactForm-' + gymId);
 
-    if (form.style.display === 'none' || form.style.display === '') {
-        form.style.display = 'flex';
-    } else {
-        form.style.display = 'none';
-    }
+    form.classList.toggle('is-open');
 }
 function toggleReplyForm(reviewId) {
     const form = document.getElementById('replyForm-' + reviewId);
-    if (form.style.display === "none" || form.style.display === "") {
-        form.style.display = "flex";
-    } else {
-        form.style.display = "none";
-    }
+    form.classList.toggle('is-open');
 }
 document.getElementById('contactModal').addEventListener('click', function(event) {
     if (event.target === this) {
@@ -410,13 +332,13 @@ function openContactModal(gymId, gymName) {
     gymIdInput.value = gymId;
     title.textContent = 'Contact ' + gymName;
 
-    modal.style.display = 'flex';
+    modal.classList.add('is-open');
 }
 
 function closeContactModal() {
     const modal = document.getElementById('contactModal');
 
-    modal.style.display = 'none';
+    modal.classList.remove('is-open');
 }
 
 let lastCheckedStar = {};
@@ -448,11 +370,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const alerts = document.querySelectorAll('.msg.success-msg, .msg.error-msg');
     alerts.forEach(function(alert) {
-        alert.style.transition = "opacity 1s ease, filter 1s ease, transform 1s ease";
         setTimeout(function() {
-            alert.style.opacity = "0";
-            alert.style.filter = "blur(10px)"; 
-            alert.style.transform = "translateY(-10px)"; 
+            alert.classList.add('message-fading');
             setTimeout(function() { alert.remove(); }, 1000); 
         }, 5000);
     });
@@ -467,8 +386,8 @@ document.addEventListener("DOMContentLoaded", function() {
             const searchTerm = e.target.value.toLowerCase().trim();
             
             if (searchTerm === "") {
-                gymCards.forEach(card => card.style.display = "flex");
-                noResultsMessage.style.display = "none";
+                gymCards.forEach(card => card.classList.remove('is-filtered'));
+                noResultsMessage.classList.add('hidden-message');
                 return;
             }
 
@@ -476,11 +395,11 @@ document.addEventListener("DOMContentLoaded", function() {
             const matchingCards = gymCards.filter(function(card) {
                 const gymName = card.querySelector('.gym-name').textContent.toLowerCase();
                 if (gymName.includes(searchTerm)) {
-                    card.style.display = "flex";
+                    card.classList.remove('is-filtered');
                     visibleCount++;
                     return true;
                 } else {
-                    card.style.display = "none";
+                    card.classList.add('is-filtered');
                     return false;
                 }
             });
@@ -498,13 +417,11 @@ document.addEventListener("DOMContentLoaded", function() {
             });
 
             if (visibleCount === 0 && gymCards.length > 0) {
-                noResultsMessage.style.display = "block";
+                noResultsMessage.classList.remove('hidden-message');
             } else {
-                noResultsMessage.style.display = "none";
+                noResultsMessage.classList.add('hidden-message');
             }
         });
-        searchInput.addEventListener('focus', function() { this.style.borderColor = "#3498db"; });
-        searchInput.addEventListener('blur', function() { this.style.borderColor = "#ccc"; });
     }
 });
 </script>

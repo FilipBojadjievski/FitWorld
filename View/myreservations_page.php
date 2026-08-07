@@ -1,44 +1,44 @@
 <?php
 include('./View/header.php'); ?>
 
-<div class="reservations-container" style="max-width: 1200px; margin: 30px auto; padding: 0 20px; min-height: 80vh; display: flex; flex-direction: column; justify-content: space-between;">
-    <div class="content-wrapper" style="flex: 1;">
+<div class="reservations-container">
+    <div class="content-wrapper">
 
-        <div class="catalog-header" style="margin-bottom: 30px; text-align: center;">
+        <div class="catalog-header">
             <h2>My Scheduled Bookings</h2>
-            <p style="color: #666;">Keep track of your upcoming sessions, reservation times, and registered facilities.</p>
+            <p class="catalog-subtitle">Keep track of your upcoming sessions, reservation times, and registered facilities.</p>
         </div>
 
         <?php if (!empty($_SESSION['success_message'])): ?>
-            <div class="msg success-msg" style="padding: 15px; background: #d4edda; color: #155724; border-radius: 5px; margin-bottom: 20px;">
+            <div class="msg success-msg page-flash-message">
                 <?= htmlspecialchars($_SESSION['success_message']); unset($_SESSION['success_message']); ?>
             </div>
         <?php endif; ?>
         <?php if (!empty($_SESSION['error_message'])): ?>
-            <div class="msg error-msg" style="padding: 15px; background: #f8d7da; color: #721c24; border-radius: 5px; margin-bottom: 20px;">
+            <div class="msg error-msg page-flash-message">
                 <?= htmlspecialchars($_SESSION['error_message']); unset($_SESSION['error_message']); ?>
             </div>
         <?php endif; ?>
 
-        <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 8px; margin-bottom: 20px;">📅 Upcoming Sessions</h3>
+        <h3 class="reservations-heading upcoming-heading">Upcoming Sessions</h3>
         
         <?php if (empty($upcoming_reservations)): ?>
-            <p style="background: #fdfefe; border: 1px dashed #cbd5e1; padding: 20px; text-align: center; color: #7f8c8d; border-radius: 8px; margin-bottom: 40px;">
+            <p class="reservations-empty upcoming-empty">
                 You don't have any upcoming gym reservations scheduled.
             </p>
         <?php else: ?>
-            <div class="events-stack" style="margin-bottom: 40px;">
+            <div class="events-stack upcoming-reservations-list">
                 <?php foreach ($upcoming_reservations as $res): ?>
-                    <div class="event-row-item" style="display: flex; align-items: center; justify-content: space-between; background: #fff; border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                    <div class="event-row-item reservation-row upcoming-reservation-row">
                         <div>
-                            <span style="font-weight: bold; color: #e67e22; font-size: 0.9rem; display: block; margin-bottom: 4px;">
+                            <span class="reservation-gym-name">
                                 📍 <?= htmlspecialchars($res['gym_name']) ?>
                             </span>
-                            <h4 style="margin: 0 0 6px 0; color: #2c3e50; font-size: 1.15rem;"><?= htmlspecialchars($res['event_title']) ?></h4>
+                            <h4 class="reservation-title"><?= htmlspecialchars($res['event_title']) ?></h4>
 
-                            <p style="margin: 0 0 8px 0; color: #64748b; font-size: 0.9rem; line-height: 1.4;"><?= htmlspecialchars($res['event_description'] ?? '') ?></p>
+                            <p class="reservation-description"><?= htmlspecialchars($res['event_description'] ?? '') ?></p>
 
-                            <span style="color: #475569; font-size: 0.9rem; font-weight: 600;">
+                            <span class="reservation-time">
                                 📅 <?= date('M d, Y', strtotime($res['event_date'])) ?> &nbsp;•&nbsp; ⏰ <?= date('H:i', strtotime($res['start_time'])) ?> - <?= date('H:i', strtotime($res['end_time'])) ?>
                             </span>
                         </div>
@@ -46,7 +46,7 @@ include('./View/header.php'); ?>
                         <form action="." method="POST" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
                             <input type="hidden" name="action" value="cancel_reservation">
                             <input type="hidden" name="signup_id" value="<?= $res['signup_id'] ?>">
-                            <button type="submit" style="background: #e74c3c; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; transition: background 0.2s;">
+                            <button type="submit" class="reservation-cancel-btn">
                                 Cancel
                             </button>
                         </form>
@@ -57,29 +57,29 @@ include('./View/header.php'); ?>
         <?php endif; ?>
 
 
-        <h3 style="color: #7f8c8d; border-bottom: 2px solid #bdc3c7; padding-bottom: 8px; margin-bottom: 20px; margin-top: 20px;">⏳ History & Past Bookings</h3>
+        <h3 class="reservations-heading history-heading">History & Past Bookings</h3>
         
         <?php if (empty($past_reservations)): ?>
-            <p style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; text-align: center; color: #94a3b8; border-radius: 8px;">
+            <p class="reservations-empty history-empty">
                 No historical reservation sessions logged yet.
             </p>
         <?php else: ?>
-            <div class="events-stack" style="opacity: 0.75;"> <?php foreach ($past_reservations as $res): ?>
-                    <div class="event-row-item" style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px 20px; border-radius: 8px; margin-bottom: 12px;">
+            <div class="events-stack past-reservations-list"> <?php foreach ($past_reservations as $res): ?>
+                    <div class="event-row-item reservation-row past-reservation-row">
                         <div>
-                            <span style="font-weight: 500; color: #7f8c8d; font-size: 0.85rem; display: block; margin-bottom: 2px;">
+                            <span class="past-gym-name">
                                 🏛️ <?= htmlspecialchars($res['gym_name']) ?>
                             </span>
-                            <h4 style="margin: 0 0 4px 0; color: #7f8c8d; font-size: 1.05rem; text-decoration: line-through;"><?= htmlspecialchars($res['event_title']) ?></h4>
+                            <h4 class="past-reservation-title"><?= htmlspecialchars($res['event_title']) ?></h4>
 
-                            <p style="margin: 0 0 6px 0; color: #94a3b8; font-size: 0.85rem; line-height: 1.4; font-style: italic;"><?= htmlspecialchars($res['event_description'] ?? '') ?></p>
+                            <p class="past-reservation-description"><?= htmlspecialchars($res['event_description'] ?? '') ?></p>
 
-                            <span style="color: #94a3b8; font-size: 0.85rem;">
+                            <span class="past-reservation-date">
                                 Completed on <?= date('M d, Y', strtotime($res['event_date'])) ?>
                             </span>
                         </div>
                         
-                        <span style="background: #e2e8f0; color: #64748b; font-size: 11px; padding: 4px 10px; border-radius: 4px; font-weight: bold;">
+                        <span class="attended-badge">
                             ✓ Attended
                         </span>
                     </div>
@@ -96,11 +96,8 @@ include('./View/header.php'); ?>
 document.addEventListener("DOMContentLoaded", function() {
     const alerts = document.querySelectorAll('.msg.success-msg, .msg.error-msg');
     alerts.forEach(function(alert) {
-        alert.style.transition = "opacity 1s ease, filter 1s ease, transform 1s ease";
         setTimeout(function() {
-            alert.style.opacity = "0";
-            alert.style.filter = "blur(10px)"; 
-            alert.style.transform = "translateY(-10px)"; 
+            alert.classList.add('message-fading');
             setTimeout(function() { alert.remove(); }, 1000); 
         }, 5000);
     });

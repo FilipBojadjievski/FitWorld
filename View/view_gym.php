@@ -36,13 +36,13 @@ if (!isset($_SESSION['user_id']) || ($_SESSION['is_admin'] ?? 0) !== 1) {
 include('./View/header.php'); ?>
 
 <?php if (!empty($_SESSION['success_message'])): ?>
-    <div class="msg success-msg" style="position: static; transform: none; margin: 15px auto; max-width: 1000px; text-align: center;">
+    <div class="msg success-msg admin-flash-message">
         ✅ <?= htmlspecialchars($_SESSION['success_message']); unset($_SESSION['success_message']); ?>
     </div>
 <?php endif; ?>
 
 <?php if (!empty($_SESSION['error_message'])): ?>
-    <div class="msg error-msg" style="margin: 15px auto; max-width: 1000px; text-align: center;">
+    <div class="msg error-msg admin-flash-message">
         ⚠️ <?= htmlspecialchars($_SESSION['error_message']); unset($_SESSION['error_message']); ?>
     </div>
 <?php endif; ?>
@@ -61,7 +61,7 @@ include('./View/header.php'); ?>
                 <p class="gym-location-sub">📍 <?= htmlspecialchars($gym['address']) ?></p>
             </div>
 
-            <div class="header-actions" style="display: flex; align-items: center; gap: 12px;">
+            <div class="header-actions">
                <a href=".?action=edit_gym_form&gym_id=<?= $gym['id'] ?>" class="edit-gym-btn">
                     ✏️ Edit Info
                 </a>
@@ -126,14 +126,14 @@ include('./View/header.php'); ?>
                     👥 Signups: <strong><?= (int)$event['signup_count'] ?></strong> / <?= (int)$event['participant_limit'] ?>
                 </div>
 
-                <div class="admin-event-buttons" style="display: flex; gap: 8px;">
-                    <a href=".?action=edit_event_form&event_id=<?= $event['id'] ?>&gym_id=<?= $gym['id'] ?>" class="edit-gym-btn" style="padding: 6px 12px; font-size: 12px;">
+                <div class="admin-event-buttons">
+                    <a href=".?action=edit_event_form&event_id=<?= $event['id'] ?>&gym_id=<?= $gym['id'] ?>" class="edit-gym-btn edit-event-btn">
                         ✏️ Edit Event
                     </a>
-                    <form action=".?action=delete_event" method="POST" style="margin: 0;" onsubmit="return confirm('Are you completely sure you want to permanently delete the event \'<?= htmlspecialchars($event['title']) ?>\'? This clears all existing user signups.');">
+                    <form action=".?action=delete_event" method="POST" class="marginless-form" onsubmit="return confirm('Are you completely sure you want to permanently delete the event \'<?= htmlspecialchars($event['title']) ?>\'? This clears all existing user signups.');">
                         <input type="hidden" name="event_id" value="<?= $event['id'] ?>">
                         <input type="hidden" name="gym_id" value="<?= $gym['id'] ?>">
-                        <button type="submit" style="background: #e74c3c; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.backgroundColor='#c0392b'" onmouseout="this.style.backgroundColor='#e74c3c'">
+                        <button type="submit" class="btn-delete-event">
                             🗑️ Delete Event
                         </button>
                     </form>

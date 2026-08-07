@@ -95,8 +95,8 @@ include('./View/header.php');
         </div>
 
         <div class="form-actions">
-            <a href=".?action=view_gym&id=<?= (int)$gym_id ?>" class="btn btn-secondary" style="margin-top: 0;">← Cancel Changes</a>
-            <button type="submit" class="btn btn-success" style="margin-top: 0; background-color: #e67e22; border: none;">Save Event Changes</button>
+            <a href=".?action=view_gym&id=<?= (int)$gym_id ?>" class="btn btn-secondary btn-no-top-margin">← Cancel Changes</a>
+            <button type="submit" class="btn btn-success btn-edit-save">Save Event Changes</button>
         </div>
 
     </form>
