@@ -18,13 +18,22 @@ $address      = trim(filter_input(INPUT_POST, 'address', FILTER_DEFAULT));
 $description  = trim(filter_input(INPUT_POST, 'description', FILTER_DEFAULT));
 $opening_hour = trim(filter_input(INPUT_POST, 'opening_hour', FILTER_DEFAULT));
 $closing_hour = trim(filter_input(INPUT_POST, 'closing_hour', FILTER_DEFAULT));
+$contact = trim(filter_input(INPUT_POST, 'contact', FILTER_DEFAULT));
 
 
-if (empty($name) || empty($address) || empty($description) || empty($opening_hour) || empty($closing_hour)) {
+if (empty($name) || empty($address) || empty($description) || empty($opening_hour) || empty($closing_hour)) || empty($contact) {
     $_SESSION['error_message'] = "All fields are required to register your facility.";
     
     $_SESSION['old_input'] = $_POST; 
     
+    header("Location: ..?action=register_new_gym");
+    exit;
+}
+if (!filter_var($contact, FILTER_VALIDATE_EMAIL)) {
+    $_SESSION['error_message'] = "Please enter a valid contact email address.";
+
+    $_SESSION['old_input'] = $_POST;
+
     header("Location: ..?action=register_new_gym");
     exit;
 }
@@ -47,7 +56,7 @@ if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
         }
     }
 }
-$success = add_gym($pdo, $owner_id, $name, $address, $description, $db_photo_filename, $opening_hour, $closing_hour);
+$success = add_gym($pdo, $owner_id, $name, $address, $description, $db_photo_filename, $opening_hour, $closing_hour, $contact);
 
 if ($success) {
     unset($_SESSION['old_input']); 

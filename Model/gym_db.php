@@ -5,13 +5,13 @@ $stmt = $pdo->prepare('SELECT id, name, address, description, opening_hour, clos
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function add_gym($pdo, $owner_id, $name, $address, $description, $photo, $opening_hour, $closing_hour) {
+function add_gym($pdo, $owner_id, $name, $address, $description, $photo, $opening_hour, $closing_hour, $contact) {
     if (empty($photo)) {
         $photo = 'default-gym.jpg';
     }
 
-    $sql = 'INSERT INTO gyms (owner_id, name, address, description, photo, opening_hour, closing_hour) 
-            VALUES (:owner_id, :name, :address, :description, :photo, :opening_hour, :closing_hour)';
+    $sql = 'INSERT INTO gyms (owner_id, name, address, description, photo, opening_hour, closing_hour, contact) 
+            VALUES (:owner_id, :name, :address, :description, :photo, :opening_hour, :closing_hour, :contact)';
     
     $stmt = $pdo->prepare($sql);
     
@@ -22,7 +22,8 @@ function add_gym($pdo, $owner_id, $name, $address, $description, $photo, $openin
         ':description'  => $description,
         ':photo'        => $photo,
         ':opening_hour' => $opening_hour,
-        ':closing_hour' => $closing_hour
+        ':closing_hour' => $closing_hour,
+        ':contact' => $contact
     ]);
 }
 
@@ -123,8 +124,14 @@ function reserve_event_spot($pdo, $event_id, $user_id) {
 
 
 function get_all_public_gyms($pdo) {
-    $stmt = $pdo->prepare('SELECT id, name, address, description, photo, opening_hour, closing_hour 
+    $stmt = $pdo->prepare('SELECT id, name, address, description, photo, opening_hour, closing_hour, contact 
                            FROM gyms WHERE is_hidden = 0 ORDER BY name ASC');
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+function get_gym_contact_by_id($pdo, $gym_id) {
+    $stmt = $pdo->prepare('SELECT name, contact FROM gyms WHERE id = ?');
+    $stmt->execute([$gym_id]);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }

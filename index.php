@@ -132,6 +132,15 @@ switch ($action) {
     case 'show_gyms':
         include('./Model/get_available_gyms.php');
         break;
+    case 'contact_gym':
+    if (!isset($_SESSION['user_id'])) {
+        $_SESSION['error_message'] = "Please log in before contacting a gym.";
+        header("Location: .?action=login");
+        exit();
+    }
+
+    include('./Model/contact_gym.php');
+    break;
 
     case 'upload_gym_photo':
         if (!isset($_SESSION['user_id']) || ($_SESSION['is_admin'] ?? 0) !== 1) {

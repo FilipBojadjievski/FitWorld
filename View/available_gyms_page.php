@@ -40,6 +40,40 @@
                                     Book a Training
                                 </button>
                             </form>
+                            <button
+    type="button"
+    onclick="openContactModal(<?= $gym['id'] ?>, '<?= htmlspecialchars($gym['name'], ENT_QUOTES) ?>')"
+    style="background: #3498db; color: #fff; border: none; padding: 8px 12px;
+           border-radius: 4px; cursor: pointer; font-size: 13px;
+           font-weight: bold; width: 100%; margin-top: 8px;"
+>
+    Contact
+</button>
+
+<form
+    id="contactForm-<?= $gym['id'] ?>"
+    action="."
+    method="POST"
+    style="display: none; flex-direction: column; gap: 8px; margin-top: 10px;"
+>
+    <input type="hidden" name="action" value="contact_gym">
+    <input type="hidden" name="gym_id" value="<?= $gym['id'] ?>">
+
+    <textarea
+        name="message"
+        placeholder="Write your message..."
+        required
+        rows="4"
+        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; resize: vertical;"
+    ></textarea>
+
+    <button
+        type="submit"
+        style="background: #2c3e50; color: #fff; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;"
+    >
+        Send
+    </button>
+</form>
                         </div>
 
                         <p style="color: #777; font-size: 13px; margin-bottom: 8px;">📍 <span class="gym-address"><?= htmlspecialchars($gym['address']) ?></span></p>
@@ -224,7 +258,102 @@
             </div>
         <?php endif; ?>
     </div>
+    <div
+    id="contactModal"
+    style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+    "
+>
+    <div
+        style="
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            padding: 25px;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        "
+    >
+
+        <button
+            type="button"
+            onclick="closeContactModal()"
+            style="
+                position: absolute;
+                top: 10px;
+                right: 15px;
+                background: none;
+                border: none;
+                font-size: 26px;
+                cursor: pointer;
+                color: #777;
+            "
+        >
+            &times;
+        </button>
+
+        <h3 id="contactModalTitle" style="margin-top: 0;">
+            Contact Gym
+        </h3>
+
+        <form action="." method="POST">
+            <input type="hidden" name="action" value="contact_gym">
+
+            <input
+                type="hidden"
+                name="gym_id"
+                id="contactGymId"
+            >
+
+            <textarea
+                name="message"
+                placeholder="Write your message..."
+                required
+                rows="6"
+                style="
+                    width: 100%;
+                    box-sizing: border-box;
+                    padding: 12px;
+                    border: 1px solid #ccc;
+                    border-radius: 6px;
+                    resize: vertical;
+                    font-family: inherit;
+                    font-size: 14px;
+                    margin-top: 10px;
+                "
+            ></textarea>
+
+            <button
+                type="submit"
+                style="
+                    width: 100%;
+                    margin-top: 12px;
+                    background: #3498db;
+                    color: white;
+                    border: none;
+                    padding: 10px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-weight: bold;
+                "
+            >
+                Send Message
+            </button>
+        </form>
+
+    </div>
 </div>
+</div>
+
 
 <script>
 // Live Tab Switching Handler Function Engine
@@ -246,7 +375,15 @@ function switchGymTab(gymId, targetTab) {
         reviewsBtn.classList.add('active-reviews-tab');
     }
 }
+function toggleContactForm(gymId) {
+    const form = document.getElementById('contactForm-' + gymId);
 
+    if (form.style.display === 'none' || form.style.display === '') {
+        form.style.display = 'flex';
+    } else {
+        form.style.display = 'none';
+    }
+}
 function toggleReplyForm(reviewId) {
     const form = document.getElementById('replyForm-' + reviewId);
     if (form.style.display === "none" || form.style.display === "") {
@@ -254,6 +391,32 @@ function toggleReplyForm(reviewId) {
     } else {
         form.style.display = "none";
     }
+}
+document.getElementById('contactModal').addEventListener('click', function(event) {
+    if (event.target === this) {
+        closeContactModal();
+    }
+});
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeContactModal();
+    }
+});
+function openContactModal(gymId, gymName) {
+    const modal = document.getElementById('contactModal');
+    const gymIdInput = document.getElementById('contactGymId');
+    const title = document.getElementById('contactModalTitle');
+
+    gymIdInput.value = gymId;
+    title.textContent = 'Contact ' + gymName;
+
+    modal.style.display = 'flex';
+}
+
+function closeContactModal() {
+    const modal = document.getElementById('contactModal');
+
+    modal.style.display = 'none';
 }
 
 let lastCheckedStar = {};

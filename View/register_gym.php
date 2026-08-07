@@ -5,7 +5,6 @@ if (!isset($_SESSION['user_id']) || ($_SESSION['is_admin'] ?? 0) !== 1) {
     header("Location: .?action=show_home");
     exit;
 }
-// 🌟 Extract flashed data if it exists, then clear the flash tracking memory
 $old = $_SESSION['old_input'] ?? [];
 unset($_SESSION['old_input']);
 if (!empty($_SESSION['error_message'])): ?>

@@ -5,7 +5,8 @@
 require_once __DIR__ . '/../PHPMailer/PHPMailerAutoload.php';
 
 function send_email($to_address, $to_name, $from_address, $from_name,
-        $subject, $body, $is_body_html = false) {
+        $subject, $body, $is_body_html = false, $reply_to_address = null,
+    $reply_to_name = null) {
     
     if (!valid_email($to_address)) {
         throw new Exception('Invalid destination email address.');
@@ -37,6 +38,12 @@ function send_email($to_address, $to_name, $from_address, $from_name,
     $mail->Password = $email_password;
     
     $mail->setFrom($from_address, $from_name);
+    if ($reply_to_address && valid_email($reply_to_address)) {
+    $mail->addReplyTo(
+        $reply_to_address,
+        $reply_to_name ?? $reply_to_address
+    );
+}
     $mail->addAddress($to_address, $to_name);
     $mail->Subject = $subject;
     $mail->Body = $body;
