@@ -7,7 +7,7 @@ $stmt = $pdo->prepare('SELECT id, name, address, description, opening_hour, clos
 
 function add_gym($pdo, $owner_id, $name, $address, $description, $photo, $opening_hour, $closing_hour, $contact) {
     if (empty($photo)) {
-        $photo = 'default-gym.jpg';
+        $photo = 'noimage.jpg';
     }
 
     $sql = 'INSERT INTO gyms (owner_id, name, address, description, photo, opening_hour, closing_hour, contact) 

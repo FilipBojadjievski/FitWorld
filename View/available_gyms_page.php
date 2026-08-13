@@ -27,7 +27,7 @@
                 <div class="gym-facility-section gym-card-wrapper">
                     
                     <div class="gym-details-card">
-                        <img class="catalog-gym-photo" src="uploads/<?= htmlspecialchars($gym['photo'] ?? 'default-gym.jpg') ?>" alt="Gym Photo">
+                        <img class="catalog-gym-photo" src="uploads/<?= htmlspecialchars($gym['photo'] ?: 'noimage.jpg') ?>" alt="Gym Photo">
                         
                         <div class="gym-primary-actions">
                             <h3 class="gym-name"><?= htmlspecialchars($gym['name']) ?></h3>
@@ -140,6 +140,7 @@
                 <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $review['user_id']): ?>
                     <form action="." method="POST" class="delete-review-form" onsubmit="return confirm('Are you sure you want to delete this comment?');">
                         <input type="hidden" name="action" value="delete_gym_comment">
+                        <input type="hidden" name="gym_id" value="<?= $gym['id'] ?>">
                         <input type="hidden" name="review_id" value="<?= $review['id'] ?>">
                         <button type="submit" class="delete-review-btn" title="Delete">🗑️</button>
                     </form>
@@ -184,6 +185,7 @@
                         <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $reply['user_id']): ?>
                             <form action="." method="POST" class="delete-reply-form" onsubmit="return confirm('Are you sure you want to delete this reply?');">
                                 <input type="hidden" name="action" value="delete_gym_comment">
+                                <input type="hidden" name="gym_id" value="<?= $gym['id'] ?>">
                                 <input type="hidden" name="review_id" value="<?= $reply['id'] ?>">
                                 <button type="submit" class="delete-reply-btn" title="Delete">🗑️</button>
                             </form>

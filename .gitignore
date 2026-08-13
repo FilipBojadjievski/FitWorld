@@ -1,4 +1,4 @@
 /Model/hidden.php
 uploads/*
 !.gitkeep
-
+!uploads/noimage.jpg

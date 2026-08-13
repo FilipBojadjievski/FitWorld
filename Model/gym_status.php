@@ -37,7 +37,7 @@ try {
 
         $photo_filename = get_gym_photo_by_id($pdo, $gym_id);
 
-        if (!empty($photo_filename) && $photo_filename !== 'default-gym.jpg') {
+        if (!empty($photo_filename) && !in_array($photo_filename, ['default-gym.jpg', 'noimage.jpg'], true)) {
             
             $upload_dir = dirname(__DIR__) . '/uploads/'; 
             $file_to_delete = $upload_dir . $photo_filename;

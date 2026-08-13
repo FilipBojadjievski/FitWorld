@@ -14,8 +14,11 @@ $isAdmin = ($_SESSION['is_admin'] ?? 0) === 1;
 $username = $_SESSION['username'] ?? '';
 $userId = $_SESSION['user_id'] ?? null;
 
-if (!empty($_SESSION['success_message'])): ?>
-    <div class="msg success-msg">
+if (!empty($_SESSION['success_message'])):
+    $successMessageTimeout = (int) ($_SESSION['success_message_timeout'] ?? 0);
+    unset($_SESSION['success_message_timeout']);
+?>
+    <div class="msg success-msg"<?= $successMessageTimeout > 0 ? ' data-auto-dismiss="' . $successMessageTimeout . '"' : '' ?>>
         <?php 
             echo htmlspecialchars($_SESSION['success_message']); 
             unset($_SESSION['success_message']); 
@@ -91,7 +94,7 @@ switch ($action) {
     case 'my_reservations':
     case 'reserve_spot':
     case 'cancel_reservation':
-    case 'reserve_general_training': // 🌟 Added right here to inherit the login check below!
+    case 'reserve_general_training':
         if (!isset($_SESSION['user_id'])) {
             $_SESSION['error_message'] = "Please log in to manage your session bookings.";
             header("Location: .?action=login");
@@ -103,7 +106,7 @@ switch ($action) {
         } elseif ($action === 'reserve_spot') {
             include('./Model/process_reservation.php');
         } elseif ($action === 'reserve_general_training') {
-            include('./Model/process_general_training.php'); // 🌟 Includes your new process handler script
+            include('./Model/process_general_training.php');
         } else {
             include('./Model/process_cancellation.php');
         }
@@ -143,52 +146,13 @@ switch ($action) {
     break;
 
     case 'upload_gym_photo':
-        if (!isset($_SESSION['user_id']) || ($_SESSION['is_admin'] ?? 0) !== 1) {
-            die("Unauthorized access.");
-        }
+    if (!isset($_SESSION['user_id']) || ($_SESSION['is_admin'] ?? 0) !== 1) {
+        $_SESSION['error_message'] = "Unauthorized access.";
+        header("Location: .?action=login");
+        exit();
+    }
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['gym_photo'])) {
-            $gym_id = filter_input(INPUT_POST, 'gym_id', FILTER_VALIDATE_INT);
-            $file = $_FILES['gym_photo'];
-
-            if ($file['error'] !== UPLOAD_ERR_OK) {
-                die("File upload error code: " . $file['error']);
-            }
-
-            if ($gym_id) {
-                $allowed_types = ['image/jpeg', 'image/png', 'image/webp'];
-                if (!in_array($file['type'], $allowed_types)) {
-                    die("Invalid file type.");
-                }
-                
-                $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-                $new_filename = 'gym_' . $gym_id . '_' . time() . '.' . $ext;
-                
-                $current_dir = dirname(__FILE__);
-                $upload_dir = $current_dir . '/uploads/'; 
-
-                if (move_uploaded_file($file['tmp_name'], $upload_dir . $new_filename)) {
-                    require_once('./Model/database.php');
-                    require_once('./Model/gym_db.php');
-                    
-                    $old_filename = get_gym_photo_by_id($pdo, $gym_id);
-                    
-                    if (!empty($old_filename)) {
-                        $old_file_path = $upload_dir . $old_filename;
-                        if (file_exists($old_file_path)) {
-                            unlink($old_file_path);
-                        }
-                    }
-                    
-                    update_gym_photo($pdo, $gym_id, $new_filename);
-                    
-                    header("Location: .?action=my_gyms");
-                    exit;
-                } else {
-                    die("XAMPP Internal Path Error. Tried moving to: " . htmlspecialchars($upload_dir . $new_filename));
-                }
-            }
-        }
-        die("Invalid request.");
+    include('./Model/process_gym_photo_upload.php');
+    break;
 }
 ?>

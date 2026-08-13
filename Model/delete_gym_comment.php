@@ -5,6 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once('./Model/database.php');
 
     $review_id = filter_input(INPUT_POST, 'review_id', FILTER_VALIDATE_INT);
+    $gym_id = filter_input(INPUT_POST, 'gym_id', FILTER_VALIDATE_INT);
     $user_id = $_SESSION['user_id']; // The logged-in user running the action
 
     if ($review_id) {
@@ -28,5 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-header("Location: .?action=show_gyms");
+$redirect = ".?action=show_gyms";
+if ($gym_id) {
+    $redirect .= "#reviews-" . $gym_id;
+}
+
+header("Location: " . $redirect);
 exit();

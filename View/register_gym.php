@@ -49,6 +49,13 @@ if (!empty($_SESSION['error_message'])): ?>
             </div>
 
             <div class="form-group">
+                <label for="contact">Contact Email</label>
+                <input type="email" id="contact" name="contact" class="width-restricted"
+                       placeholder="e.g., contact@yourgym.com"
+                       value="<?= htmlspecialchars($old['contact'] ?? '') ?>" required>
+            </div>
+
+            <div class="form-group">
                 <label for="description">Short Description</label>
                 <textarea id="description" name="description" class="width-restricted" rows="4" 
                           placeholder="Describe your premium equipment..." required><?= htmlspecialchars($old['description'] ?? '') ?></textarea>
