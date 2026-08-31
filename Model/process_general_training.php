@@ -1,5 +1,4 @@
 <?php
-// Model/process_general_training.php
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once('./Model/database.php');
@@ -9,7 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($gym_id) {
         try {
-            // 1. Insert the private user booking row straight into event_signups
             $query = "INSERT INTO event_signups (user_id, event_id, gym_id, signed_up_at) 
                       VALUES (:user_id, NULL, :gym_id, NOW())";
             
@@ -20,23 +18,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $_SESSION['success_message'] = "General facility training booked successfully!";
 
-            // 2. Fetch the gym details and session details we just created for the email body
             $gymQuery = "SELECT name AS gym_name, address AS gym_address FROM gyms WHERE id = ?";
             $gymStmt = $pdo->prepare($gymQuery);
             $gymStmt->execute([$gym_id]);
             $gymDetails = $gymStmt->fetch();
 
-            // Setup temporary time formatting variables to match your reservations timeline layout
             $currentDate = date('M d, Y');
             $currentTime = date('H:i');
-
-            // 3. Load your teammate's email handler script
             require_once('./Model/email.php'); 
 
             $username = $_SESSION['username'];
             $user_email = $_SESSION['user_email'];
 
-            // 4. Dispatch the automated mail alert envelope
             try {
                 send_email(
                     $user_email, 
@@ -48,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     true
                 );
             } catch (Exception $ex) {
-                // Keep it silent if local network configurations or SMTP handshakes fail during local testing
                 error_log("General training notification email failed: " . $ex->getMessage());
             }
             

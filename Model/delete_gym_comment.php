@@ -1,16 +1,14 @@
 <?php
-// Model/delete_gym_comment.php
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once('./Model/database.php');
 
     $review_id = filter_input(INPUT_POST, 'review_id', FILTER_VALIDATE_INT);
     $gym_id = filter_input(INPUT_POST, 'gym_id', FILTER_VALIDATE_INT);
-    $user_id = $_SESSION['user_id']; // The logged-in user running the action
+    $user_id = $_SESSION['user_id']; 
 
     if ($review_id) {
         try {
-            // Enforce that the comment must belong to the logged-in user to be deleted
             $sql = "DELETE FROM gym_reviews WHERE id = :review_id AND user_id = :user_id";
             
             $stmt = $pdo->prepare($sql);

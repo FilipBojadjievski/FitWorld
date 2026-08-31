@@ -23,11 +23,9 @@ if (!$gym) {
 <?php include('./View/header.php'); ?>
 
 <?php
-// Extract flashed input data fallback if it exists following a validation error
 $old = $_SESSION['old_input'] ?? [];
 unset($_SESSION['old_input']);
 
-// Render active session tracking error message alerts if thrown
 if (!empty($_SESSION['error_message'])): ?>
     <div class="msg error-msg">
         <?php 

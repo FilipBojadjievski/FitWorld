@@ -1,5 +1,5 @@
 <?php
-// Controller/SignupController.php
+
 if (session_status() === PHP_SESSION_NONE) {
     $lifetime = 600;
     session_set_cookie_params($lifetime, '/');
@@ -8,7 +8,6 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once('../Model/database.php');
 require_once('../Model/signup_func.php');
-// 🌟 Link your fixed email helper script right here
 require_once('../Model/email.php'); 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -18,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirm_password = $_POST['confirm_password'];
     $is_admin = isset($_POST['is_admin']) ? 1 : 0;
 
-    // Validation
+
     if (empty($username) || empty($email) || empty($password) || empty($confirm_password)) {
         $_SESSION['error_message'] = "All fields are required.";
         header("Location: ../index.php?action=signup");
@@ -44,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     true
                 );
             } catch (Exception $ex) {
-                // Logs the error silently if Google's network blocks local app connections
+                
                 error_log("Signup notification failed: " . $ex->getMessage());
             }
 

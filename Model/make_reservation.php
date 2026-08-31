@@ -1,11 +1,10 @@
 <?php
-// Model/Reservation.php
 
 class Reservation {
     
-    // 1. Fetch all reservations for a specific user
+
     public static function getByUserId($userId) {
-        global $pdo; // Uses the instance from database.php
+        global $pdo; 
         
         $sql = "SELECT 
                     es.id AS signup_id,
@@ -27,11 +26,10 @@ class Reservation {
         return $stmt->fetchAll();
     }
 
-    // 2. Delete a reservation if it belongs to the logged-in user
+    
     public static function cancel($signupId, $userId) {
         global $pdo;
-        
-        // Security check: ensure the user_id matches the signup record row
+    
         $sql = "DELETE FROM event_signups WHERE id = ? AND user_id = ?";
         $stmt = $pdo->prepare($sql);
         return $stmt->execute([$signupId, $userId]);

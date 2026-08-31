@@ -36,10 +36,7 @@ if (!$gym || empty($gym['contact'])) {
     exit;
 }
 
-/*
- * Get the logged-in user's information.
- * We use this for the message body and Reply-To address.
- */
+
 $stmt = $pdo->prepare('SELECT username, email FROM users WHERE id = ?');
 $stmt->execute([$_SESSION['user_id']]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -51,10 +48,6 @@ if (!$user || empty($user['email'])) {
 }
 
 try {
-    /*
-     * The actual sender still needs to be the Gmail account used
-     * to authenticate with Gmail SMTP.
-     */
     include __DIR__ . '/hidden.php';
 
     $to_address = $gym['contact'];

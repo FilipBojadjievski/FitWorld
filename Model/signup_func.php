@@ -6,9 +6,8 @@ function register_user($pdo, $username, $email, $password, $is_admin) {
     $stmt->execute([$username, $email]);
     
     if ($stmt->fetch()) {
-        return "Username or Email is already registered."; // Return specific error string
+        return "Username or Email is already registered."; 
     }
-
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $insert_stmt = $pdo->prepare('INSERT INTO users (username, email, password, is_admin) VALUES (?, ?, ?, ?)');

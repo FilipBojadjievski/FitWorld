@@ -92,7 +92,6 @@ include('./View/header.php'); ?>
 </div>
 
 <script>
-// Reuses team's autovanish notification transition system
 document.addEventListener("DOMContentLoaded", function() {
     const alerts = document.querySelectorAll('.msg.success-msg, .msg.error-msg');
     alerts.forEach(function(alert) {

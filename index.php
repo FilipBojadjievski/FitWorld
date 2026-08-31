@@ -35,10 +35,6 @@ if ($action === NULL) {
     }
 }
 
-$secure_actions = ['signup', 'login', 'register_new_gym', 'upload_gym_photo', 'my_reservations'];
-if (in_array($action, $secure_actions)) {
-    require_once('./Util/secure_conn.php');
-}
 
 switch ($action) {
     case 'show_home':

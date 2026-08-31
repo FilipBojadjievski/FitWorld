@@ -10,11 +10,8 @@ $gym_id = filter_input(INPUT_GET, 'gym_id', FILTER_VALIDATE_INT);
             header("Location: .?action=my_gyms");
             exit;
         }
-// Extract flashed input memory data if validation failed previously
 $old = $_SESSION['old_input'] ?? [];
 unset($_SESSION['old_input']);
-
-// Ensure the gym ID context is safely fetched from the controller routing stream
 $gym_id = filter_input(INPUT_GET, 'gym_id', FILTER_VALIDATE_INT) ?: ($old['gym_id'] ?? 0);
 ?>
 

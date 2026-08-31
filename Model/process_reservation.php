@@ -1,11 +1,9 @@
 <?php
-// Model/process_reservation.php
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Enforce authentication guards
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['error_message'] = "Please log in to reserve workout slots.";
     header("Location: .?action=login");
@@ -46,8 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$user_id, $event_id]);
             $reservation = $stmt->fetch();
-
-            //Sending confirmation email
             require_once('./Model/email.php'); 
 
             try {
@@ -61,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     true
                 );
             } catch (Exception $ex) {
-                // Logs the error silently if Google's network blocks local app connections
                 error_log("Signup notification failed: " . $ex->getMessage());
             }
 

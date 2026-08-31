@@ -17,20 +17,17 @@ if (!$event_id || !$gym_id) {
 }
 
 try {
-    // Start a transaction to ensure both operations succeed together cleanly
+
     $pdo->beginTransaction();
 
-    // Clear dependent children records first to avoid foreign key constraints errors
     $deleteSignupsSql = "DELETE FROM event_signups WHERE event_id = ?";
     $signupsStmt = $pdo->prepare($deleteSignupsSql);
     $signupsStmt->execute([$event_id]);
 
-    // Delete the main event entry row
     $deleteEventSql = "DELETE FROM events WHERE id = ?";
     $eventStmt = $pdo->prepare($deleteEventSql);
     $eventStmt->execute([$event_id]);
 
-    // Commit changes safely to the database logs
     $pdo->commit();
 
     $_SESSION['success_message'] = "Event and all associated roster signups permanently deleted.";
@@ -38,7 +35,6 @@ try {
     exit();
 
 } catch (Exception $e) {
-    // Roll back changes if any query collapses to maintain database integrity
     if ($pdo->inTransaction()) {
         $pdo->rollBack();
     }

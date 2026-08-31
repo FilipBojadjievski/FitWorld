@@ -1,8 +1,8 @@
 <?php
 $host = 'localhost';
 $db   = 'fitworld_db';
-$user = 'root'; // Default XAMPP username
-$pass = '';     // Default XAMPP password is empty
+$user = 'root'; 
+$pass = '';     
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

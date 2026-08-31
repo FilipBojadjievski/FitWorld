@@ -24,7 +24,7 @@ if (!isset($_SESSION['user_id']) || ($_SESSION['is_admin'] ?? 0) !== 1) {
     if ($show === 'past') {
         $events = get_past_events_by_gym($pdo, $gym_id);
     } else {
-        $show = 'upcoming'; // Fallback baseline defaults to upcoming
+        $show = 'upcoming'; 
         $events = get_upcoming_events_by_gym($pdo, $gym_id);
     }
     foreach ($events as &$event) {

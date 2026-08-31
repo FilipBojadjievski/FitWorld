@@ -94,6 +94,9 @@
                                         <div class="event-row-item catalog-event-row">
                                             <div class="event-info-track">
                                                 <h5 class="catalog-event-title"><?= htmlspecialchars($event['title']) ?></h5>
+                                                <?php if (!empty(trim($event['description'] ?? ''))): ?>
+                                                    <p class="catalog-event-description"><?= htmlspecialchars($event['description']) ?></p>
+                                                <?php endif; ?>
                                                 <span class="catalog-event-time">
                                                      📅 <?= date('M d', strtotime($event['date'])) ?> | ⏰ <?= date('H:i', strtotime($event['start_time'])) ?>
                                                 </span>
@@ -122,7 +125,7 @@
                                     <?php endforeach; ?>
                                 </div>
                             <?php else: ?>
-                                <p class="no-events-message">No ongoing fitness classes scheduled.</p>
+                                <p class="no-events-message">No ongoing fitness events scheduled.</p>
                             <?php endif; ?>
                         </div>
 

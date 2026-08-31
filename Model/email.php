@@ -1,7 +1,4 @@
 <?php
-// Model/email.php
-
-// 🌟 FIX 1: Use relative directory magic (__DIR__) to find PHPMailer automatically
 require_once __DIR__ . '/../PHPMailer/PHPMailerAutoload.php';
 
 function send_email($to_address, $to_name, $from_address, $from_name,
@@ -31,12 +28,10 @@ function send_email($to_address, $to_name, $from_address, $from_name,
     $mail->Port = 587;
     $mail->SMTPAuth = true;
     
-    // 🌟 FIX 2: Use __DIR__ to guarantee it looks inside the Model folder for hidden.php
     include __DIR__ . '/hidden.php';
     
     $mail->Username = $email_username;
     $mail->Password = $email_password;
-    
     $mail->setFrom($from_address, $from_name);
     if ($reply_to_address && valid_email($reply_to_address)) {
     $mail->addReplyTo(

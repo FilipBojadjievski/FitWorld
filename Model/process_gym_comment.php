@@ -1,5 +1,4 @@
 <?php
-// Model/process_gym_comment.php
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once('./Model/database.php');
@@ -8,7 +7,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $comment_text = filter_input(INPUT_POST, 'comment_text', FILTER_DEFAULT);
     $rating = filter_input(INPUT_POST, 'rating', FILTER_VALIDATE_INT) ?: null;
     
-    // 🌟 Capture parent_id if this is a reply submission
     $parent_id = filter_input(INPUT_POST, 'parent_id', FILTER_VALIDATE_INT) ?: null;
     
     $user_id = $_SESSION['user_id'];
@@ -36,6 +34,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Change the redirect at the bottom of Model/process_gym_comment.php to this:
 header("Location: .?action=show_gyms#reviews-" . $gym_id);
 exit();

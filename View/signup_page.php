@@ -50,6 +50,5 @@ $is_admin = isset($_SESSION['form_input']['is_admin']) ? $_SESSION['form_input']
 </div>
 
 <?php 
-// Include your standard footer layout
 include('./View/footer.php'); 
 ?>
