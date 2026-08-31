@@ -56,6 +56,7 @@ switch ($action) {
     case 'edit_gym_form':
     case 'update_gym':
     case 'add_event_form':
+    case 'edit_event_form':
     case 'delete_event':
     case 'update_event':
         if (!isset($_SESSION['user_id']) || ($_SESSION['is_admin'] ?? 0) !== 1) {
